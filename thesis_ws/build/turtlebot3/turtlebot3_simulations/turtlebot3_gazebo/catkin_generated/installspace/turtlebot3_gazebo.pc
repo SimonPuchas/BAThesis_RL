@@ -1,0 +1,8 @@
+prefix=/home/simon/BAThesis_RL/thesis_ws/install
+
+Name: turtlebot3_gazebo
+Description: Description of turtlebot3_gazebo
+Version: 0.1.7
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lturtlebot3_gazebo
+Requires: geometry_msgs nav_msgs roscpp sensor_msgs std_msgs tf gazebo_ros

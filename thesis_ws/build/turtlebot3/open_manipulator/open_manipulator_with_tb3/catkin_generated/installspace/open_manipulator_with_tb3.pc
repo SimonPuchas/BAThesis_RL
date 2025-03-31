@@ -1,0 +1,8 @@
+prefix=/home/simon/BAThesis_RL/thesis_ws/install
+
+Name: open_manipulator_with_tb3
+Description: Description of open_manipulator_with_tb3
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: std_msgs
