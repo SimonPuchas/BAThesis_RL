@@ -165,18 +165,20 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
     def _is_done(self, observations):
 
         if self._episode_done:
-            rospy.logerr("TurtleBot2 is Too Close to wall==>")
+            rospy.logerr("TurtleBot3 is Too Close to wall==>")
+        '''
         else:
-            rospy.logwarn("TurtleBot2 is NOT close to a wall ==>")
+            rospy.logwarn("TurtleBot3 is NOT close to a wall ==>")
+        '''
 
         # Now we check if it has crashed based on the imu
         imu_data = self.get_imu()
         linear_acceleration_magnitude = self.get_vector_magnitude(imu_data.linear_acceleration)
         if linear_acceleration_magnitude > self.max_linear_aceleration:
-            rospy.logerr("TurtleBot2 Crashed==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
+            rospy.logerr("TurtleBot3 Crashed==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
             self._episode_done = True
         else:
-            rospy.logerr("DIDNT crash TurtleBot2 ==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
+            rospy.logerr("DIDNT crash TurtleBot3 ==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
 
 
         return self._episode_done

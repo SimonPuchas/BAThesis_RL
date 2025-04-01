@@ -7,6 +7,7 @@ import random
 import matplotlib.pyplot as plt
 from collections import namedtuple, deque
 from itertools import count
+from functools import reduce
 
 import time
 from gym import wrappers
@@ -192,7 +193,7 @@ if __name__ == '__main__':
         #state = ''.join(map(str, observation))
 
         for t in count():
-            rospy.logwarn("############### Start Step=>" + str(t))
+            #rospy.logwarn("############### Start Step=>" + str(t))
             # Select and perform an action
             action, epsilon = select_action(state, epsilon_start, epsilon_end, epsilon_decay)
             rospy.logdebug("Next action is:%d", action)
@@ -227,7 +228,7 @@ if __name__ == '__main__':
                 rospy.logdebug("NOT DONE")
                 state = next_state
 
-            rospy.logwarn("############### END Step=>" + str(t))
+            #rospy.logwarn("############### END Step=>" + str(t))
             # Update the target network, copying all weights and biases in DQN
         if i_episode % target_update == 0:
             target_net.load_state_dict(policy_net.state_dict())
