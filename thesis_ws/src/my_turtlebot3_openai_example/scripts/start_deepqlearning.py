@@ -197,10 +197,7 @@ if __name__ == '__main__':
             action, epsilon = select_action(state, epsilon_start, epsilon_end, epsilon_decay)
             rospy.logdebug("Next action is:%d", action)
 
-            # newer gym versions return 5 values instead of 4
-            observation, reward, terminated, truncated, info = env.step(action.item())
-            done = terminated or truncated
-
+            observation, reward, done, info = env.step(action.item())
             rospy.logdebug(str(observation) + " " + str(reward))
             cumulated_reward += reward
             if highest_reward < cumulated_reward:

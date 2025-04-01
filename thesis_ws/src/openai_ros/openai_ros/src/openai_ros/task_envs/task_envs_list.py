@@ -219,8 +219,14 @@ def RegisterOpenAI_Ros_Env(task_env, max_episode_steps=10000):
 
     return result
 
-# i had to change this as the old code didnt work anymore for some reason
+
 def GetAllRegisteredGymEnvs():
-    all_envs = envs.registry.keys()  # Use .keys() instead of .all()
-    env_ids = list(all_envs)  # Convert to list if needed
+    """
+    Returns a List of all the registered Envs in the system
+    return EX: ['Copy-v0', 'RepeatCopy-v0', 'ReversedAddition-v0', ... ]
+    """
+
+    all_envs = envs.registry.all()
+    env_ids = [env_spec.id for env_spec in all_envs]
+
     return env_ids
