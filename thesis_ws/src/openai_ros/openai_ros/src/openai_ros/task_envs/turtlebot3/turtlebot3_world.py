@@ -177,9 +177,10 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         if linear_acceleration_magnitude > self.max_linear_aceleration:
             rospy.logerr("TurtleBot3 Crashed==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
             self._episode_done = True
+        '''
         else:
             rospy.logerr("DIDNT crash TurtleBot3 ==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
-
+        '''
 
         return self._episode_done
 
