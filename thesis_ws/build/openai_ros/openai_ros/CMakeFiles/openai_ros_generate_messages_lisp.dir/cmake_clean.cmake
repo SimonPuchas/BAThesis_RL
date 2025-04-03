@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/simon/BAThesis_RL/thesis_ws/devel/share/common-lisp/ros/openai_ros/msg/RLExperimentInfo.lisp"
+  "/home/simon/PathFinderRL/thesis_ws/devel/share/common-lisp/ros/openai_ros/msg/RLExperimentInfo.lisp"
   "CMakeFiles/openai_ros_generate_messages_lisp"
 )
 

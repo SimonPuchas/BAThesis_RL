@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/simon/BAThesis_RL/thesis_ws/devel/share/gennodejs/ros/openai_ros/msg/RLExperimentInfo.js"
+  "/home/simon/PathFinderRL/thesis_ws/devel/share/gennodejs/ros/openai_ros/msg/RLExperimentInfo.js"
   "CMakeFiles/openai_ros_generate_messages_nodejs"
 )
 

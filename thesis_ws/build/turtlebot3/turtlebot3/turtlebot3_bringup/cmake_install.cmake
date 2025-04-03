@@ -1,8 +1,8 @@
-# Install script for directory: /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_bringup
+# Install script for directory: /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_bringup
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/simon/BAThesis_RL/thesis_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/simon/PathFinderRL/thesis_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,21 +38,21 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_bringup/catkin_generated/installspace/turtlebot3_bringup.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_bringup/catkin_generated/installspace/turtlebot3_bringup.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_bringup/cmake" TYPE FILE FILES
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_bringup/catkin_generated/installspace/turtlebot3_bringupConfig.cmake"
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_bringup/catkin_generated/installspace/turtlebot3_bringupConfig-version.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_bringup/catkin_generated/installspace/turtlebot3_bringupConfig.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_bringup/catkin_generated/installspace/turtlebot3_bringupConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_bringup" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_bringup/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_bringup" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_bringup/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_bringup" TYPE DIRECTORY FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_bringup/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_bringup" TYPE DIRECTORY FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_bringup/launch")
 endif()
 

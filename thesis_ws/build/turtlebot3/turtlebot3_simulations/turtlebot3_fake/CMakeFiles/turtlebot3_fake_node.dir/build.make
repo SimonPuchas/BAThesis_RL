@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/simon/BAThesis_RL/thesis_ws/src
+CMAKE_SOURCE_DIR = /home/simon/PathFinderRL/thesis_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/simon/BAThesis_RL/thesis_ws/build
+CMAKE_BINARY_DIR = /home/simon/PathFinderRL/thesis_ws/build
 
 # Include any dependencies generated for this target.
 include turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/depend.make
@@ -58,17 +58,17 @@ include turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_
 include turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/flags.make
 
 turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/flags.make
-turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o: /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/simon/BAThesis_RL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o -c /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp
+turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o: /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/simon/PathFinderRL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o"
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o -c /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp
 
 turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.i"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp > CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.i
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp > CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.i
 
 turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.s"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp -o CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.s
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/src/turtlebot3_fake.cpp -o CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.s
 
 # Object files for target turtlebot3_fake_node
 turtlebot3_fake_node_OBJECTS = \
@@ -77,44 +77,44 @@ turtlebot3_fake_node_OBJECTS = \
 # External object files for target turtlebot3_fake_node
 turtlebot3_fake_node_EXTERNAL_OBJECTS =
 
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/build.make
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libtf.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libtf2_ros.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libactionlib.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libmessage_filters.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libroscpp.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libxmlrpcpp.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libtf2.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librosconsole.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librosconsole_log4cxx.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librosconsole_backend_interface.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libroscpp_serialization.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librostime.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libcpp_common.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/simon/BAThesis_RL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/turtlebot3_fake_node.dir/link.txt --verbose=$(VERBOSE)
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake.cpp.o
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/build.make
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libtf.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libtf2_ros.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libactionlib.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libmessage_filters.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libroscpp.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libxmlrpcpp.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libtf2.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librosconsole.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librosconsole_log4cxx.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librosconsole_backend_interface.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libroscpp_serialization.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/librostime.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /opt/ros/noetic/lib/libcpp_common.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node: turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/simon/PathFinderRL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node"
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/turtlebot3_fake_node.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/build: /home/simon/BAThesis_RL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node
+turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/build: /home/simon/PathFinderRL/thesis_ws/devel/lib/turtlebot3_fake/turtlebot3_fake_node
 
 .PHONY : turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/build
 
 turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/clean:
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && $(CMAKE_COMMAND) -P CMakeFiles/turtlebot3_fake_node.dir/cmake_clean.cmake
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake && $(CMAKE_COMMAND) -P CMakeFiles/turtlebot3_fake_node.dir/cmake_clean.cmake
 .PHONY : turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/clean
 
 turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/depend:
-	cd /home/simon/BAThesis_RL/thesis_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/simon/BAThesis_RL/thesis_ws/src /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake /home/simon/BAThesis_RL/thesis_ws/build /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/simon/PathFinderRL/thesis_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/simon/PathFinderRL/thesis_ws/src /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake /home/simon/PathFinderRL/thesis_ws/build /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : turtlebot3/turtlebot3_simulations/turtlebot3_fake/CMakeFiles/turtlebot3_fake_node.dir/depend
 

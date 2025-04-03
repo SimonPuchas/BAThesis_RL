@@ -1,8 +1,8 @@
-# Install script for directory: /home/simon/BAThesis_RL/thesis_ws/src/my_turtlebot3_openai_example
+# Install script for directory: /home/simon/PathFinderRL/thesis_ws/src/my_turtlebot3_openai_example
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/simon/BAThesis_RL/thesis_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/simon/PathFinderRL/thesis_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/build/my_turtlebot3_openai_example/catkin_generated/installspace/my_turtlebot3_openai_example.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/build/my_turtlebot3_openai_example/catkin_generated/installspace/my_turtlebot3_openai_example.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/my_turtlebot3_openai_example/cmake" TYPE FILE FILES
-    "/home/simon/BAThesis_RL/thesis_ws/build/my_turtlebot3_openai_example/catkin_generated/installspace/my_turtlebot3_openai_exampleConfig.cmake"
-    "/home/simon/BAThesis_RL/thesis_ws/build/my_turtlebot3_openai_example/catkin_generated/installspace/my_turtlebot3_openai_exampleConfig-version.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/my_turtlebot3_openai_example/catkin_generated/installspace/my_turtlebot3_openai_exampleConfig.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/my_turtlebot3_openai_example/catkin_generated/installspace/my_turtlebot3_openai_exampleConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/my_turtlebot3_openai_example" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/src/my_turtlebot3_openai_example/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/my_turtlebot3_openai_example" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/src/my_turtlebot3_openai_example/package.xml")
 endif()
 

@@ -1,8 +1,8 @@
-# Install script for directory: /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit
+# Install script for directory: /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/simon/BAThesis_RL/thesis_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/simon/PathFinderRL/thesis_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,25 +38,25 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_moveit/catkin_generated/installspace/open_manipulator_moveit.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_moveit/catkin_generated/installspace/open_manipulator_moveit.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit/cmake" TYPE FILE FILES
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_moveit/catkin_generated/installspace/open_manipulator_moveitConfig.cmake"
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_moveit/catkin_generated/installspace/open_manipulator_moveitConfig-version.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_moveit/catkin_generated/installspace/open_manipulator_moveitConfig.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_moveit/catkin_generated/installspace/open_manipulator_moveitConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit" TYPE DIRECTORY FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit/launch" REGEX "/setup\\_assistant\\.launch$" EXCLUDE)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit" TYPE DIRECTORY FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit/launch" REGEX "/setup\\_assistant\\.launch$" EXCLUDE)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit" TYPE DIRECTORY FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit/config")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/open_manipulator_moveit" TYPE DIRECTORY FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_moveit/config")
 endif()
 

@@ -1,8 +1,8 @@
-prefix=/home/simon/BAThesis_RL/thesis_ws/devel
+prefix=/home/simon/PathFinderRL/thesis_ws/devel
 
 Name: openai_ros
 Description: Description of openai_ros
 Version: 1.0.0
-Cflags: -I/home/simon/BAThesis_RL/thesis_ws/devel/include
+Cflags: -I/home/simon/PathFinderRL/thesis_ws/devel/include
 Libs: -L${prefix}/lib 
 Requires: message_runtime rospy std_msgs

@@ -67,14 +67,14 @@ set(open_manipulator_with_tb3_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(open_manipulator_with_tb3_SOURCE_PREFIX /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_with_tb3)
-  set(open_manipulator_with_tb3_DEVEL_PREFIX /home/simon/BAThesis_RL/thesis_ws/devel)
+  set(open_manipulator_with_tb3_SOURCE_PREFIX /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_with_tb3)
+  set(open_manipulator_with_tb3_DEVEL_PREFIX /home/simon/PathFinderRL/thesis_ws/devel)
   set(open_manipulator_with_tb3_INSTALL_PREFIX "")
   set(open_manipulator_with_tb3_PREFIX ${open_manipulator_with_tb3_DEVEL_PREFIX})
 else()
   set(open_manipulator_with_tb3_SOURCE_PREFIX "")
   set(open_manipulator_with_tb3_DEVEL_PREFIX "")
-  set(open_manipulator_with_tb3_INSTALL_PREFIX /home/simon/BAThesis_RL/thesis_ws/install)
+  set(open_manipulator_with_tb3_INSTALL_PREFIX /home/simon/PathFinderRL/thesis_ws/install)
   set(open_manipulator_with_tb3_PREFIX ${open_manipulator_with_tb3_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/simon/BAThesis_RL/thesis_ws/install/lib;/home/simon/BAThesis_RL/thesis_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/simon/PathFinderRL/thesis_ws/install/lib;/home/simon/PathFinderRL/thesis_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

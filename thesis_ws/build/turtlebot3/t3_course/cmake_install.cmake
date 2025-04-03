@@ -1,8 +1,8 @@
-# Install script for directory: /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/t3_course
+# Install script for directory: /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/t3_course
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/simon/BAThesis_RL/thesis_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/simon/PathFinderRL/thesis_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/t3_course/catkin_generated/installspace/t3_course.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/t3_course/catkin_generated/installspace/t3_course.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/t3_course/cmake" TYPE FILE FILES
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/t3_course/catkin_generated/installspace/t3_courseConfig.cmake"
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/t3_course/catkin_generated/installspace/t3_courseConfig-version.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/t3_course/catkin_generated/installspace/t3_courseConfig.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/t3_course/catkin_generated/installspace/t3_courseConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/t3_course" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/t3_course/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/t3_course" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/t3_course/package.xml")
 endif()
 

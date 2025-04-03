@@ -1,4 +1,4 @@
-prefix=/home/simon/BAThesis_RL/thesis_ws/devel
+prefix=/home/simon/PathFinderRL/thesis_ws/devel
 
 Name: my_turtlebot3_openai_example
 Description: Description of my_turtlebot3_openai_example

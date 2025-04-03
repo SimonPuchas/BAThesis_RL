@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/simon/BAThesis_RL/thesis_ws/src
+CMAKE_SOURCE_DIR = /home/simon/PathFinderRL/thesis_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/simon/BAThesis_RL/thesis_ws/build
+CMAKE_BINARY_DIR = /home/simon/PathFinderRL/thesis_ws/build
 
 # Include any dependencies generated for this target.
 include turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/depend.make
@@ -58,17 +58,17 @@ include turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_mani
 include turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/flags.make
 
 turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/flags.make
-turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o: /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/simon/BAThesis_RL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o -c /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp
+turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o: /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/simon/PathFinderRL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o"
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o -c /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp
 
 turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.i"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp > CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.i
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp > CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.i
 
 turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.s"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp -o CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.s
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo/src/open_manipulator_gazebo_grip_pub.cpp -o CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.s
 
 # Object files for target open_manipulator_gazebo_grip_pub
 open_manipulator_gazebo_grip_pub_OBJECTS = \
@@ -77,64 +77,64 @@ open_manipulator_gazebo_grip_pub_OBJECTS = \
 # External object files for target open_manipulator_gazebo_grip_pub
 open_manipulator_gazebo_grip_pub_EXTERNAL_OBJECTS =
 
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/build.make
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libgazebo_ros_control.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libdefault_robot_hw_sim.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libcontroller_manager.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libcontrol_toolbox.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libdynamic_reconfigure_config_init_mutex.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libtransmission_interface_parser.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libtransmission_interface_loader.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libtransmission_interface_loader_plugins.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/liburdf.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_sensor.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_model_state.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_model.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_world.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libtinyxml.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libclass_loader.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libPocoFoundation.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libdl.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libroslib.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librospack.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libpython3.8.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libtinyxml2.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole_bridge.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libposition_controllers.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librealtime_tools.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libroscpp.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole_log4cxx.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole_backend_interface.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libroscpp_serialization.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libxmlrpcpp.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librostime.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libcpp_common.so
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-/home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/simon/BAThesis_RL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub"
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/open_manipulator_gazebo_grip_pub.dir/link.txt --verbose=$(VERBOSE)
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/src/open_manipulator_gazebo_grip_pub.cpp.o
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/build.make
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libgazebo_ros_control.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libdefault_robot_hw_sim.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libcontroller_manager.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libcontrol_toolbox.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libdynamic_reconfigure_config_init_mutex.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libtransmission_interface_parser.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libtransmission_interface_loader.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libtransmission_interface_loader_plugins.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/liburdf.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_sensor.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_model_state.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_model.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liburdfdom_world.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libtinyxml.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libclass_loader.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libPocoFoundation.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libdl.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libroslib.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librospack.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libpython3.8.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libtinyxml2.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole_bridge.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libposition_controllers.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librealtime_tools.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libroscpp.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole_log4cxx.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librosconsole_backend_interface.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libroscpp_serialization.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libxmlrpcpp.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/librostime.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /opt/ros/noetic/lib/libcpp_common.so
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub: turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/simon/PathFinderRL/thesis_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub"
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/open_manipulator_gazebo_grip_pub.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/build: /home/simon/BAThesis_RL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub
+turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/build: /home/simon/PathFinderRL/thesis_ws/devel/lib/open_manipulator_gazebo/open_manipulator_gazebo_grip_pub
 
 .PHONY : turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/build
 
 turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/clean:
-	cd /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && $(CMAKE_COMMAND) -P CMakeFiles/open_manipulator_gazebo_grip_pub.dir/cmake_clean.cmake
+	cd /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo && $(CMAKE_COMMAND) -P CMakeFiles/open_manipulator_gazebo_grip_pub.dir/cmake_clean.cmake
 .PHONY : turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/clean
 
 turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/depend:
-	cd /home/simon/BAThesis_RL/thesis_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/simon/BAThesis_RL/thesis_ws/src /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo /home/simon/BAThesis_RL/thesis_ws/build /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo /home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/simon/PathFinderRL/thesis_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/simon/PathFinderRL/thesis_ws/src /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_gazebo /home/simon/PathFinderRL/thesis_ws/build /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo /home/simon/PathFinderRL/thesis_ws/build/turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : turtlebot3/open_manipulator/open_manipulator_gazebo/CMakeFiles/open_manipulator_gazebo_grip_pub.dir/depend
 

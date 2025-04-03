@@ -67,14 +67,14 @@ set(openai_ros_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(openai_ros_SOURCE_PREFIX /home/simon/BAThesis_RL/thesis_ws/src/openai_ros/openai_ros)
-  set(openai_ros_DEVEL_PREFIX /home/simon/BAThesis_RL/thesis_ws/devel)
+  set(openai_ros_SOURCE_PREFIX /home/simon/PathFinderRL/thesis_ws/src/openai_ros/openai_ros)
+  set(openai_ros_DEVEL_PREFIX /home/simon/PathFinderRL/thesis_ws/devel)
   set(openai_ros_INSTALL_PREFIX "")
   set(openai_ros_PREFIX ${openai_ros_DEVEL_PREFIX})
 else()
   set(openai_ros_SOURCE_PREFIX "")
   set(openai_ros_DEVEL_PREFIX "")
-  set(openai_ros_INSTALL_PREFIX /home/simon/BAThesis_RL/thesis_ws/install)
+  set(openai_ros_INSTALL_PREFIX /home/simon/PathFinderRL/thesis_ws/install)
   set(openai_ros_PREFIX ${openai_ros_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/simon/BAThesis_RL/thesis_ws/install/lib;/home/simon/BAThesis_RL/thesis_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/simon/PathFinderRL/thesis_ws/install/lib;/home/simon/PathFinderRL/thesis_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

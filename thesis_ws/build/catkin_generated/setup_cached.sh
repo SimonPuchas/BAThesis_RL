@@ -7,4 +7,5 @@
 # new environment variables
 
 # modified environment variables
-export PWD='/home/simon/BAThesis_RL/thesis_ws/build'
+export PWD='/home/simon/PathFinderRL/thesis_ws/build'
+export ROS_PACKAGE_PATH='/home/simon/PathFinderRL/thesis_ws/src:/opt/ros/noetic/share'

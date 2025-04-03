@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/simon/BAThesis_RL/thesis_ws/devel/lib/python3/dist-packages/openai_ros/msg/_RLExperimentInfo.py"
-  "/home/simon/BAThesis_RL/thesis_ws/devel/lib/python3/dist-packages/openai_ros/msg/__init__.py"
+  "/home/simon/PathFinderRL/thesis_ws/devel/lib/python3/dist-packages/openai_ros/msg/_RLExperimentInfo.py"
+  "/home/simon/PathFinderRL/thesis_ws/devel/lib/python3/dist-packages/openai_ros/msg/__init__.py"
   "CMakeFiles/openai_ros_generate_messages_py"
 )
 

@@ -67,14 +67,14 @@ set(turtlebot3_gazebo_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(turtlebot3_gazebo_SOURCE_PREFIX /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo)
-  set(turtlebot3_gazebo_DEVEL_PREFIX /home/simon/BAThesis_RL/thesis_ws/devel)
+  set(turtlebot3_gazebo_SOURCE_PREFIX /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo)
+  set(turtlebot3_gazebo_DEVEL_PREFIX /home/simon/PathFinderRL/thesis_ws/devel)
   set(turtlebot3_gazebo_INSTALL_PREFIX "")
   set(turtlebot3_gazebo_PREFIX ${turtlebot3_gazebo_DEVEL_PREFIX})
 else()
   set(turtlebot3_gazebo_SOURCE_PREFIX "")
   set(turtlebot3_gazebo_DEVEL_PREFIX "")
-  set(turtlebot3_gazebo_INSTALL_PREFIX /home/simon/BAThesis_RL/thesis_ws/install)
+  set(turtlebot3_gazebo_INSTALL_PREFIX /home/simon/PathFinderRL/thesis_ws/install)
   set(turtlebot3_gazebo_PREFIX ${turtlebot3_gazebo_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(turtlebot3_gazebo_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/include " STREQUAL " ")
+if(NOT "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/include " STREQUAL " ")
   set(turtlebot3_gazebo_INCLUDE_DIRS "")
-  set(_include_dirs "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/include")
+  set(_include_dirs "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/include")
   if(NOT "https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues " STREQUAL " ")
     set(_report "Check the issue tracker 'https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://turtlebot3.robotis.com " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/
         message(FATAL_ERROR "Project 'turtlebot3_gazebo' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'turtlebot3_gazebo' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'turtlebot3_gazebo' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/${idir}'.  ${_report}")
     endif()
     _list_append_unique(turtlebot3_gazebo_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/simon/BAThesis_RL/thesis_ws/devel/lib;/home/simon/BAThesis_RL/thesis_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/simon/PathFinderRL/thesis_ws/devel/lib;/home/simon/PathFinderRL/thesis_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

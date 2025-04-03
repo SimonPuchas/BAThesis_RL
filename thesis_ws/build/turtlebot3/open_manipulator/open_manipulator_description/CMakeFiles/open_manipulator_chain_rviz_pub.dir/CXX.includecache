@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_description/src/open_manipulator_chain_rviz_pub.cpp
+/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/open_manipulator/open_manipulator_description/src/open_manipulator_chain_rviz_pub.cpp
 ros/ros.h
 -
 unistd.h

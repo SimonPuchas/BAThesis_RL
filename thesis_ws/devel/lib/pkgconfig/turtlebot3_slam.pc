@@ -1,4 +1,4 @@
-prefix=/home/simon/BAThesis_RL/thesis_ws/devel
+prefix=/home/simon/PathFinderRL/thesis_ws/devel
 
 Name: turtlebot3_slam
 Description: Description of turtlebot3_slam

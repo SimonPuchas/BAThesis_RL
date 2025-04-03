@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/simon/BAThesis_RL/thesis_ws/devel/include/openai_ros/RLExperimentInfo.h"
+  "/home/simon/PathFinderRL/thesis_ws/devel/include/openai_ros/RLExperimentInfo.h"
   "CMakeFiles/openai_ros_generate_messages_cpp"
 )
 

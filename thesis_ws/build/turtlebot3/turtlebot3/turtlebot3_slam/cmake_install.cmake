@@ -1,8 +1,8 @@
-# Install script for directory: /home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam
+# Install script for directory: /home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/simon/BAThesis_RL/thesis_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/simon/PathFinderRL/thesis_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,29 +38,29 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_slam/catkin_generated/installspace/turtlebot3_slam.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_slam/catkin_generated/installspace/turtlebot3_slam.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam/cmake" TYPE FILE FILES
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_slam/catkin_generated/installspace/turtlebot3_slamConfig.cmake"
-    "/home/simon/BAThesis_RL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_slam/catkin_generated/installspace/turtlebot3_slamConfig-version.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_slam/catkin_generated/installspace/turtlebot3_slamConfig.cmake"
+    "/home/simon/PathFinderRL/thesis_ws/build/turtlebot3/turtlebot3/turtlebot3_slam/catkin_generated/installspace/turtlebot3_slamConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE FILE FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE FILE FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE DIRECTORY FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE DIRECTORY FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/launch")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE DIRECTORY FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/rviz")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE DIRECTORY FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/rviz")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE DIRECTORY FILES "/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/bag")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot3_slam" TYPE DIRECTORY FILES "/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3/turtlebot3_slam/bag")
 endif()
 

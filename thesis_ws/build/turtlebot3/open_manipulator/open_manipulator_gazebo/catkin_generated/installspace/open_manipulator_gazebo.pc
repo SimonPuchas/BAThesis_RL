@@ -1,4 +1,4 @@
-prefix=/home/simon/BAThesis_RL/thesis_ws/install
+prefix=/home/simon/PathFinderRL/thesis_ws/install
 
 Name: open_manipulator_gazebo
 Description: Description of open_manipulator_gazebo

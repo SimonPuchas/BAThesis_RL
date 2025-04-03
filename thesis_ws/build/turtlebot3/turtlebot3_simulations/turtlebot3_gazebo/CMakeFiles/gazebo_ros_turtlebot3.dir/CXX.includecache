@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/include/turtlebot3_gazebo/gazebo_ros_turtlebot3.h
+/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/include/turtlebot3_gazebo/gazebo_ros_turtlebot3.h
 ros/ros.h
 -
 ros/time.h
@@ -28,9 +28,9 @@ tf/tf.h
 nav_msgs/Odometry.h
 -
 
-/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/src/gazebo_ros_turtlebot3.cpp
+/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/src/gazebo_ros_turtlebot3.cpp
 turtlebot3_gazebo/gazebo_ros_turtlebot3.h
-/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/src/turtlebot3_gazebo/gazebo_ros_turtlebot3.h
+/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/src/turtlebot3_gazebo/gazebo_ros_turtlebot3.h
 
 /opt/ros/noetic/include/geometry_msgs/Point.h
 string

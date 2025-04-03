@@ -1,8 +1,8 @@
-prefix=/home/simon/BAThesis_RL/thesis_ws/devel
+prefix=/home/simon/PathFinderRL/thesis_ws/devel
 
 Name: turtlebot3_fake
 Description: Description of turtlebot3_fake
 Version: 0.1.7
-Cflags: -I/home/simon/BAThesis_RL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/include
+Cflags: -I/home/simon/PathFinderRL/thesis_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_fake/include
 Libs: -L${prefix}/lib -lturtlebot3_fake_node
 Requires: geometry_msgs nav_msgs roscpp sensor_msgs std_msgs tf turtlebot3_msgs
