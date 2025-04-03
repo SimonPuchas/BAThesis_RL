@@ -7,6 +7,8 @@ from geometry_msgs.msg import Vector3
 from openai_ros.task_envs.task_commons import LoadYamlFileParamsTest
 from openai_ros.openai_ros_common import ROSLauncher
 import os
+import cv2
+from cv_bridge import CvBridge
 
 
 class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
@@ -22,6 +24,8 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         assert os.path.exists(ros_ws_abspath), "The Simulation ROS Workspace path " + ros_ws_abspath + \
                                                " DOESNT exist, execute: mkdir -p " + ros_ws_abspath + \
                                                "/src;cd " + ros_ws_abspath + ";catkin_make"
+
+        self.use_camera = rospy.get_param('/turtlebot3/use_camera', False)
 
         ROSLauncher(rospackage_name="turtlebot3_gazebo",
                     launch_file_name="start_world.launch",
@@ -70,13 +74,24 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.min_laser_value = rospy.get_param('/turtlebot3/min_laser_value')
         self.max_linear_aceleration = rospy.get_param('/turtlebot3/max_linear_aceleration')
 
-
         # We create two arrays based on the binary values that will be assigned
         # In the discretization method.
-        laser_scan = self.get_laser_scan()
-        num_laser_readings = int(len(laser_scan.ranges)/self.new_ranges)
-        high = numpy.full((num_laser_readings), self.max_laser_value)
-        low = numpy.full((num_laser_readings), self.min_laser_value)
+
+        if self.use_camera:
+            self.depth_image_size = rospy.get_param('/turtlebot3/depth_image_size', [60, 80]) 
+            self.depth_threshold = rospy.get_param('/turtlebot3/depth_threshold', 0.1) 
+            self.cv_bridge = CvBridge()
+
+        if self.use_camera:
+            high = numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 6.0)
+            low = numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 0.0)
+        else:
+            laser_scan = self.get_laser_scan()
+            num_laser_readings = int(len(laser_scan.ranges)/self.new_ranges)
+            high = numpy.full((num_laser_readings), self.max_laser_value)
+            low = numpy.full((num_laser_readings), self.min_laser_value)
+
+        
 
         # We only use two integers
         self.observation_space = spaces.Box(low, high)
@@ -150,17 +165,55 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         :return:
         """
         rospy.logdebug("Start Get Observation ==>")
-        # We get the laser scan data
-        laser_scan = self.get_laser_scan()
-
-        discretized_observations = self.discretize_scan_observation(    laser_scan,
-                                                                        self.new_ranges
-                                                                        )
+        
+        if self.use_camera:
+            # Use RGB-D camera for observations
+            depth_image = self.get_depth_image()
+            discretized_observations = self.process_depth_image(depth_image)
+        else:
+            # Use laser scan for observations
+            laser_scan = self.get_laser_scan()
+            discretized_observations = self.discretize_scan_observation(laser_scan, self.new_ranges)
 
         rospy.logdebug("Observations==>"+str(discretized_observations))
         rospy.logdebug("END Get Observation ==>")
         return discretized_observations
 
+    def process_depth_image(self, depth_image_raw):
+        """
+        Process the depth image to get a simplified representation
+        :param depth_image_raw: Raw depth image from the camera
+        :return: Processed depth values as a flattened array
+        """
+        self._episode_done = False
+        
+        if depth_image_raw is None:
+            return numpy.zeros(self.depth_image_size[0] * self.depth_image_size[1])
+        
+        try:
+            cv_depth_image = self.cv_bridge.imgmsg_to_cv2(depth_image_raw, desired_encoding="passthrough")
+            
+            # Resize to reduce dimensionality
+            resized_depth = cv2.resize(cv_depth_image, 
+                                      (self.depth_image_size[1], self.depth_image_size[0]), 
+                                      interpolation=cv2.INTER_AREA)
+            
+            # Check if robot is too close to an obstacle
+            if numpy.nanmin(resized_depth) < self.depth_threshold and numpy.nanmin(resized_depth) > 0:
+                rospy.logerr("TurtleBot3 is Too Close to obstacle in depth image ==> " + 
+                             str(numpy.nanmin(resized_depth)) + " < " + str(self.depth_threshold))
+                self._episode_done = True
+            
+            # Replace NaN and Inf values
+            resized_depth = numpy.nan_to_num(resized_depth, nan=10.0, posinf=10.0, neginf=0.0)
+            
+            resized_depth = numpy.clip(resized_depth, 0.0, 10.0)
+            
+            return resized_depth.flatten()
+            
+        except Exception as e:
+            rospy.logerr("Error processing depth image: %s", str(e))
+            return numpy.zeros(self.depth_image_size[0] * self.depth_image_size[1])
 
     def _is_done(self, observations):
 

@@ -75,6 +75,12 @@ class TurtleBot3Env(robot_gazebo_env.RobotGazeboEnv):
         rospy.Subscriber("/imu", Imu, self._imu_callback)
         rospy.Subscriber("/scan", LaserScan, self._laser_scan_callback)
 
+        # only subscribe to the camera topics, if it is enabled
+        # the RGB camera feed is not used right now
+        if self.use_camera:
+            rospy.Subscriber("/camera/rgb/image_raw", Image, self._camera_rgb_callback)
+            rospy.Subscriber("/camera/depth/image_raw", Image, self._camera_depth_callback)
+
         self._cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 
         self._check_publishers_connection()
@@ -103,7 +109,14 @@ class TurtleBot3Env(robot_gazebo_env.RobotGazeboEnv):
         rospy.logdebug("START ALL SENSORS READY")
         self._check_odom_ready()
         self._check_imu_ready()
-        self._check_laser_scan_ready()
+
+        if not self.use_camera:
+            self._check_laser_scan_ready()
+        else:
+            self._check_camera_depth_ready()
+            self._check_camera_rgb_ready()
+
+
         rospy.logdebug("ALL SENSORS READY")
 
     def _check_odom_ready(self):
@@ -145,6 +158,28 @@ class TurtleBot3Env(robot_gazebo_env.RobotGazeboEnv):
             except:
                 rospy.logerr("Current /scan not ready yet, retrying for getting laser_scan")
         return self.laser_scan
+    
+    def _check_camera_rgb_ready(self):
+        self.camera_rgb = None
+        rospy.logdebug("Waiting for /camera/rgb/image_raw to be READY...")
+        while self.camera_rgb is None and not rospy.is_shutdown():
+            try:
+                self.camera_rgb = rospy.wait_for_message("/camera/rgb/image_raw", Image, timeout=5.0)
+                rospy.logdebug("Current /camera/rgb/image_raw READY=>")
+            except:
+                rospy.logerr("Current /camera/rgb/image_raw not ready yet, retrying for getting camera_rgb")
+        return self.camera_rgb
+    
+    def _check_camera_depth_ready(self):
+        self.camera_depth = None
+        rospy.logdebug("Waiting for /camera/depth/image_raw to be READY...")
+        while self.camera_depth is None and not rospy.is_shutdown():
+            try:
+                self.camera_depth = rospy.wait_for_message("/camera/depth/image_raw", Image, timeout=5.0)
+                rospy.logdebug("Current /camera/depth/image_raw READY=>")
+            except:
+                rospy.logerr("Current /camera/depth/image_raw not ready yet, retrying for getting camera_depth")
+        return self.camera_depth
 
 
     def _odom_callback(self, data):
@@ -155,6 +190,12 @@ class TurtleBot3Env(robot_gazebo_env.RobotGazeboEnv):
 
     def _laser_scan_callback(self, data):
         self.laser_scan = data
+
+    def _camera_rgb_callback(self, data):
+        self.camera_rgb = data
+
+    def _camera_depth_callback(self, data):
+        self.camera_depth = data
 
 
     def _check_publishers_connection(self):
@@ -290,3 +331,9 @@ class TurtleBot3Env(robot_gazebo_env.RobotGazeboEnv):
 
     def get_laser_scan(self):
         return self.laser_scan
+    
+    def get_rgb_image(self):
+        return self.camera_rgb
+    
+    def get_depth_image(self):
+        return self.camera_depth
