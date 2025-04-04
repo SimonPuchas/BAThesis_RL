@@ -79,7 +79,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
 
         if self.use_camera:
             self.depth_image_size = rospy.get_param('/turtlebot3/depth_image_size', [60, 80]) 
-            self.depth_threshold = rospy.get_param('/turtlebot3/depth_threshold', 0.1) 
+            self.depth_threshold = rospy.get_param('/turtlebot3/depth_threshold', 0.15) 
             self.cv_bridge = CvBridge()
 
         if self.use_camera:
