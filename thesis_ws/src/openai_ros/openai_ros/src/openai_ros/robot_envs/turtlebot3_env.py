@@ -146,7 +146,6 @@ class TurtleBot3Env(robot_gazebo_env.RobotGazeboEnv):
 
         return self.imu
 
-
     def _check_laser_scan_ready(self):
         self.laser_scan = None
         rospy.logdebug("Waiting for /scan to be READY...")

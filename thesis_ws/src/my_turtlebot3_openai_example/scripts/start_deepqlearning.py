@@ -118,6 +118,30 @@ def optimize_model(batch_size, gamma):
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
 
+def plot_rewards(episode_rewards, episode_n, window_size=100):
+    plt.figure(figsize=(10, 6))
+    plt.plot(episode_rewards, 'b.', label='individual episodes', alpha=0.5)
+    
+    if len(episode_rewards) >= window_size:
+        moving_avg = []
+        for i in range(len(episode_rewards) - window_size + 1):
+            window_avg = numpy.mean(episode_rewards[i:i+window_size])
+            moving_avg.append(window_avg)
+        plt.plot(range(window_size-1, len(episode_rewards)), moving_avg, 'b-', 
+                label=f'moving average of last {window_size} episodes')
+    
+    plt.xlabel('Episode')
+    plt.ylabel('Reward')
+    plt.title('DQN on TurtleBot3World-v0')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    rospack = rospkg.RosPack()
+    pkg_path = rospack.get_path('my_turtlebot3_openai_example')
+    plt.savefig(f'{pkg_path}/training_results/reward_plot_{episode_n}.png')
+    plt.close()
+    
+
 
 # import our training environment
 if __name__ == '__main__':
@@ -172,13 +196,14 @@ if __name__ == '__main__':
     target_net.load_state_dict(policy_net.state_dict())
     target_net.eval()
 
-    optimizer = optim.RMSprop(policy_net.parameters())
+    optimizer = optim.Adam(policy_net.parameters(), lr=1e-4)
     memory = ReplayMemory(10000)
     episode_durations = []
     steps_done = 0
 
     start_time = time.time()
     highest_reward = 0
+    episode_rewards = []
 
     # Starts the main training loop: the one about the episodes to do
     for i_episode in range(n_episodes):
@@ -221,6 +246,7 @@ if __name__ == '__main__':
             optimize_model(batch_size, gamma)
             if done:
                 episode_durations.append(t + 1)
+                episode_rewards.append(cumulated_reward)
                 rospy.logdebug("DONE")
                 last_time_steps = numpy.append(last_time_steps, [int(t + 1)])
                 break
@@ -233,6 +259,9 @@ if __name__ == '__main__':
         if i_episode % target_update == 0:
             target_net.load_state_dict(policy_net.state_dict())
 
+        if i_episode % 100 == 0:
+            plot_rewards(episode_rewards, i_episode)
+
         m, s = divmod(int(time.time() - start_time), 60)
         h, m = divmod(m, 60)
         rospy.logerr(("EP: " + str(i_episode + 1) + " - gamma: " + str(
@@ -241,6 +270,8 @@ if __name__ == '__main__':
 
     rospy.loginfo(("\n|" + str(n_episodes) + "|" + str(gamma) + "|" + str(epsilon_start) + "*" +
                    str(epsilon_decay) + "|" + str(highest_reward) + "| PICTURE |"))
+
+    plot_rewards(episode_rewards, i_episode)
 
     l = last_time_steps.tolist()
     l.sort()
