@@ -21,6 +21,8 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
+import os
+
 
 class ReplayMemory(object):
 
@@ -118,6 +120,7 @@ def optimize_model(batch_size, gamma):
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
 
+# logic to plot the rewards
 def plot_rewards(episode_rewards, episode_n, window_size=100):
     plt.figure(figsize=(10, 6))
     plt.plot(episode_rewards, 'b.', label='individual episodes', alpha=0.5)
@@ -141,7 +144,62 @@ def plot_rewards(episode_rewards, episode_n, window_size=100):
     plt.savefig(f'{pkg_path}/training_results/reward_plot_{episode_n}.png')
     plt.close()
     
+# logic to save the model
+def save_checkpoint(episode, policy_net, target_net, optimizer, memory, episode_rewards, steps_done, epsilon, highest_reward):
+    rospack = rospkg.RosPack()
+    pkg_path = rospack.get_path('my_turtlebot3_openai_example')
+    checkpoint_dir = f'{pkg_path}/checkpoints'
+    
+    if not os.path.exists(checkpoint_dir):
+        os.makedirs(checkpoint_dir)
+    
+    checkpoint = {
+        'episode': episode,
+        'policy_net_state_dict': policy_net.state_dict(),
+        'target_net_state_dict': target_net.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'memory': memory,
+        'episode_rewards': episode_rewards,
+        'steps_done': steps_done,
+        'epsilon': epsilon,
+        'highest_reward': highest_reward
+    }
+    
+    checkpoint_path = f'{checkpoint_dir}/checkpoint_episode_{episode}.pt'
+    torch.save(checkpoint, checkpoint_path)
+    rospy.loginfo(f"Checkpoint saved at episode {episode}")
+    
+    # Keep only the last 4 checkpoints
+    checkpoint_files = sorted([f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint_episode_')])
+    if len(checkpoint_files) > 4:
+        for old_file in checkpoint_files[:-4]:
+            os.remove(os.path.join(checkpoint_dir, old_file))
+            rospy.loginfo(f"Removed old checkpoint: {old_file}")
 
+# logic to load the checkpoint
+def load_checkpoint(checkpoint_path):
+    if not os.path.exists(checkpoint_path):
+        rospy.logwarn(f"Checkpoint file {checkpoint_path} not found")
+        return None
+    
+    rospy.loginfo(f"Loading checkpoint from {checkpoint_path}")
+    checkpoint = torch.load(checkpoint_path)
+    return checkpoint
+
+def get_latest_checkpoint():
+    rospack = rospkg.RosPack()
+    pkg_path = rospack.get_path('my_turtlebot3_openai_example')
+    checkpoint_dir = f'{pkg_path}/checkpoints'
+    
+    if not os.path.exists(checkpoint_dir):
+        return None
+    
+    checkpoint_files = sorted([f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint_episode_')])
+    if not checkpoint_files:
+        return None
+    
+    latest_checkpoint = os.path.join(checkpoint_dir, checkpoint_files[-1])
+    return latest_checkpoint
 
 # import our training environment
 if __name__ == '__main__':
@@ -179,6 +237,8 @@ if __name__ == '__main__':
 
     running_step = rospy.get_param("/turtlebot3/running_step")
 
+    load_model = rospy.get_param("/turtlebot3/load_model", False)
+
     # Initialises the algorithm that we are going to use for learning
     # if gpu is to be used
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -205,8 +265,24 @@ if __name__ == '__main__':
     highest_reward = 0
     episode_rewards = []
 
+    latest_checkpoint_path = get_latest_checkpoint()
+    start_episode = 0
+
+    if latest_checkpoint_path and load_model:
+                checkpoint = load_checkpoint(latest_checkpoint_path)
+                if checkpoint:
+                    start_episode = checkpoint['episode'] + 1
+                    policy_net.load_state_dict(checkpoint['policy_net_state_dict'])
+                    target_net.load_state_dict(checkpoint['target_net_state_dict'])
+                    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+                    memory = checkpoint['memory']
+                    episode_rewards = checkpoint['episode_rewards']
+                    steps_done = checkpoint['steps_done']
+                    highest_reward = checkpoint['highest_reward']
+                    rospy.loginfo(f"Resuming training from episode {start_episode}")
+
     # Starts the main training loop: the one about the episodes to do
-    for i_episode in range(n_episodes):
+    for i_episode in range(start_episode, n_episodes):
         rospy.logdebug("############### START EPISODE=>" + str(i_episode))
 
         cumulated_reward = 0
@@ -261,6 +337,19 @@ if __name__ == '__main__':
 
         if i_episode % 100 == 0:
             plot_rewards(episode_rewards, i_episode)
+
+        if (i_episode + 1) % 50 == 0:
+            save_checkpoint(
+                i_episode + 1, 
+                policy_net, 
+                target_net, 
+                optimizer, 
+                memory, 
+                episode_rewards, 
+                steps_done, 
+                epsilon,
+                highest_reward
+            )
 
         m, s = divmod(int(time.time() - start_time), 60)
         h, m = divmod(m, 60)
