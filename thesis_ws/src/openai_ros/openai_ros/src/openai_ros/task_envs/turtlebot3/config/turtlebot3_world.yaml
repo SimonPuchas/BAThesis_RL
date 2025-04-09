@@ -17,12 +17,17 @@ turtlebot3: #namespace
     min_laser_value: 0 # Value considered there is an obstacle or crashed
     max_linear_aceleration: 15.0 # Linear acceleration value in which we consider Turtlebot 3 has crashed into something
     
-    forwards_reward: 5 # Points Given to go forwards
-    turn_reward: 3 # Points Given to turn as action
+    forwards_reward: 0.5 # Points Given to go forwards
+    turn_reward: 0.5 # Points Given to turn as action
     end_episode_points: 200 # Points given when ending an episode
 
     use_camera: true
     depth_image_size: [60, 80]  # [height, width]
     depth_threshold: 0.15
     
+    goal_position_x: -0.5
+    goal_position_y: 4.0
+    goal_distance_threshold: 0.1
+    goal_reached_reward: 500.0
+    closer_to_goal_reward: 5.0
 

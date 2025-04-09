@@ -248,7 +248,7 @@ if __name__ == '__main__':
 
     # Get number of actions from gym action space
     n_actions = env.action_space.n
-    n_observations = 4800
+    n_observations = 4802
 
     # initialize networks with input and output sizes
     policy_net = DQN(n_observations, n_actions).to(device)

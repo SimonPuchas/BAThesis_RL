@@ -3,7 +3,7 @@ import numpy
 from gym import spaces
 from openai_ros.robot_envs import turtlebot3_env
 from gym.envs.registration import register
-from geometry_msgs.msg import Vector3
+from geometry_msgs.msg import Vector3, Point
 from openai_ros.task_envs.task_commons import LoadYamlFileParamsTest
 from openai_ros.openai_ros_common import ROSLauncher
 import os
@@ -74,6 +74,13 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.min_laser_value = rospy.get_param('/turtlebot3/min_laser_value')
         self.max_linear_aceleration = rospy.get_param('/turtlebot3/max_linear_aceleration')
 
+        # Parameters for the goal point
+        self.goal_position = Point()
+        self.goal_position.x = rospy.get_param('/turtlebot3/goal_position_x', 5.0)
+        self.goal_position.y = rospy.get_param('/turtlebot3/goal_position_y', 5.0)
+        self.goal_position.z = 0.0
+        self.goal_distance_threshold = rospy.get_param('/turtlebot3/goal_distance_threshold', 0.2)
+
         # We create two arrays based on the binary values that will be assigned
         # In the discretization method.
 
@@ -83,17 +90,15 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             self.cv_bridge = CvBridge()
 
         if self.use_camera:
-            high = numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 6.0)
-            low = numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 0.0)
+            obs_size = self.depth_image_size[0] * self.depth_image_size[1] + 2  # +2 for distance and angle
+            high = numpy.append(numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 6.0), [1.0, 1.0])
+            low = numpy.append(numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 0.0), [0.0, -1.0])
         else:
             laser_scan = self.get_laser_scan()
             num_laser_readings = int(len(laser_scan.ranges)/self.new_ranges)
-            high = numpy.full((num_laser_readings), self.max_laser_value)
-            low = numpy.full((num_laser_readings), self.min_laser_value)
+            high = numpy.append(numpy.full((num_laser_readings), self.max_laser_value), [1.0, 1.0])
+            low = numpy.append(numpy.full((num_laser_readings), self.min_laser_value), [0.0, -1.0])
 
-        
-
-        # We only use two integers
         self.observation_space = spaces.Box(low, high)
 
         rospy.logdebug("ACTION SPACES TYPE===>"+str(self.action_space))
@@ -105,6 +110,11 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.end_episode_points = rospy.get_param("/turtlebot3/end_episode_points")
 
         self.cumulated_steps = 0.0
+
+        # Goal oriented rewards
+        self.goal_reached_reward = rospy.get_param('/turtlebot3/goal_reached_reward', 200.0)
+        self.closer_to_goal_reward = rospy.get_param('/turtlebot3/closer_to_goal_reward', 5.0)
+        self.previous_distance_to_goal = None
 
 
     def _set_init_pose(self):
@@ -128,6 +138,11 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.cumulated_reward = 0.0
         # Set to false Done, because its calculated asyncronously
         self._episode_done = False
+
+        # Initialize previous distance to the goal
+        odometry = self.get_odom()
+        current_position = odometry.pose.pose.position
+        self.previous_distance_to_goal = self.get_distance_to_goal(current_position)
 
 
     def _set_action(self, action):
@@ -169,15 +184,38 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         if self.use_camera:
             # Use RGB-D camera for observations
             depth_image = self.get_depth_image()
-            discretized_observations = self.process_depth_image(depth_image)
+            base_observations = self.process_depth_image(depth_image)
         else:
             # Use laser scan for observations
             laser_scan = self.get_laser_scan()
-            discretized_observations = self.discretize_scan_observation(laser_scan, self.new_ranges)
+            base_observations = self.discretize_scan_observation(laser_scan, self.new_ranges)
 
-        rospy.logdebug("Observations==>"+str(discretized_observations))
+        odometry = self.get_odom()
+        current_position = odometry.pose.pose.position
+
+        distance_to_goal = self.get_distance_to_goal(current_position)
+        normalized_distance = min(1.0, distance_to_goal / 10.0)
+
+        orientation = odometry.pose.pose.orientation
+        orientation_list = [orientation.x, orientation.y, orientation.z, orientation.w]
+        _, _, yaw = self.euler_from_quaternion(orientation_list)
+
+        angle_to_goal = numpy.arctan2(self.goal_position.y - current_position.y,
+                                       self.goal_position.x - current_position.x)
+        
+        angle_difference = angle_to_goal - yaw
+        while angle_difference > numpy.pi:
+            angle_difference -= 2 * numpy.pi
+        while angle_difference < -numpy.pi:
+            angle_difference += 2 * numpy.pi
+
+        normalized_angle = angle_difference / numpy.pi
+
+        rospy.logdebug("Observations==>"+str(base_observations))
+        rospy.logdebug("Distance to goal==>"+str(distance_to_goal))
+        rospy.logdebug("Angle to goal==>"+str(angle_difference))
         rospy.logdebug("END Get Observation ==>")
-        return discretized_observations
+        return numpy.append(base_observations, [normalized_distance, normalized_angle])
 
     def process_depth_image(self, depth_image_raw):
         """
@@ -234,18 +272,50 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         else:
             rospy.logerr("DIDNT crash TurtleBot3 ==>"+str(linear_acceleration_magnitude)+">"+str(self.max_linear_aceleration))
         '''
+        
+        # Check if we reached the goal
+        odometry = self.get_odom()
+        current_position = odometry.pose.pose.position
+        distance_to_goal = self.get_distance_to_goal(current_position)
+
+        if distance_to_goal <= self.goal_distance_threshold:
+            rospy.loginfo("TurtleBot3 Reached Goal==>"+str(distance_to_goal))
+            self._episode_done = True
 
         return self._episode_done
 
     def _compute_reward(self, observations, done):
+        odometry = self.get_odom()
+        current_position = odometry.pose.pose.position
+        distance_to_goal = self.get_distance_to_goal(current_position)
+
+        distance_difference = self.previous_distance_to_goal - distance_to_goal
+        self.previous_distance_to_goal = distance_to_goal
 
         if not done:
+            # Basic rewards for moving
             if self.last_action == "FORWARDS":
-                reward = self.forwards_reward
+                base_reward = self.forwards_reward
             else:
-                reward = self.turn_reward
+                base_reward = self.turn_reward
+
+            # Reward for getting closer
+            if distance_difference > 0:
+                goal_reward = self.closer_to_goal_reward * distance_difference
+                rospy.logdebug("Getting closer to goal, reward: " + str(goal_reward))
+            # Small negative reward for moving away
+            else:
+                goal_reward = -1
+                rospy.logwarn("Getting further from goal, reward: " + str(goal_reward))
+            reward = base_reward + goal_reward
         else:
-            reward = -1*self.end_episode_points
+            # Reward for reaching goal
+            if distance_to_goal <= self.goal_distance_threshold:
+                reward = self.goal_reached_reward
+                rospy.loginfo("Goal reached, reward: " + str(reward))
+            # Negative reward for crashing
+            else:
+                reward = -1*self.end_episode_points
 
 
         rospy.logdebug("reward=" + str(reward))
@@ -303,4 +373,34 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         force_magnitude = numpy.linalg.norm(contact_force_np)
 
         return force_magnitude
+    
+    def get_distance_to_goal(self, current_position):
+        """
+        Calculate the distance from the robot to the goal position
+        :param current_position: Current position of the robot
+        :return: Euclidean distance to the goal
+        """
+        distance = numpy.sqrt(
+            (current_position.x - self.goal_position.x) ** 2 +
+            (current_position.y - self.goal_position.y) ** 2
+        )
+        return distance
+    
+    def euler_from_quaternion(self, quaternion):
+        """
+        Convert quaternion to euler angles (roll, pitch, yaw)
+        """
+        x, y, z, w = quaternion
+        sinr_cosp = 2 * (w * x + y * z)
+        cosr_cosp = 1 - 2 * (x * x + y * y)
+        roll = numpy.arctan2(sinr_cosp, cosr_cosp)
+        
+        sinp = 2 * (w * y - z * x)
+        pitch = numpy.arcsin(sinp)
+        
+        siny_cosp = 2 * (w * z + x * y)
+        cosy_cosp = 1 - 2 * (y * y + z * z)
+        yaw = numpy.arctan2(siny_cosp, cosy_cosp)
+        
+        return roll, pitch, yaw
 
