@@ -9,7 +9,7 @@ turtlebot3: #namespace
     gamma: 0.97
     epsilon_start: 0.95
     epsilon_end: 0.05
-    epsilon_decay: 2000
+    epsilon_decay: 5000
     n_episodes: 500
     target_update: 10
     batch_size: 128

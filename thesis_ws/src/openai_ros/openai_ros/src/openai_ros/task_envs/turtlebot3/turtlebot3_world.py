@@ -99,6 +99,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             high = numpy.append(numpy.full((num_laser_readings), self.max_laser_value), [1.0, 1.0])
             low = numpy.append(numpy.full((num_laser_readings), self.min_laser_value), [0.0, -1.0])
 
+        # Contains camera/laser readings + distance and angle to goal
         self.observation_space = spaces.Box(low, high)
 
         rospy.logdebug("ACTION SPACES TYPE===>"+str(self.action_space))
