@@ -307,7 +307,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             # Small negative reward for moving away
             else:
                 goal_reward = -1
-                rospy.logwarn("Getting further from goal, reward: " + str(goal_reward))
+                rospy.logdebug("Getting further from goal, reward: " + str(goal_reward))
             reward = base_reward + goal_reward
         else:
             # Reward for reaching goal

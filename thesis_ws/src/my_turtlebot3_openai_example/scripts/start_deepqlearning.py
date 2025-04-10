@@ -63,7 +63,7 @@ def select_action(state, eps_start, eps_end, eps_decay):
     global steps_done
     sample = random.random()
     eps_threshold = eps_end + (eps_start - eps_end) * \
-        math.exp(-1. * steps_done / eps_decay)
+        math.exp(-1. * (steps_done/6) / eps_decay)
     steps_done += 1
     if sample > eps_threshold:
         with torch.no_grad():
