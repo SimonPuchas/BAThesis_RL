@@ -81,6 +81,8 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.goal_position.z = 0.0
         self.goal_distance_threshold = rospy.get_param('/turtlebot3/goal_distance_threshold', 0.2)
 
+        self.timeout = rospy.get_param('/turtlebot3/timeout', 120.0)
+
         # We create two arrays based on the binary values that will be assigned
         # In the discretization method.
 
@@ -144,6 +146,8 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         odometry = self.get_odom()
         current_position = odometry.pose.pose.position
         self.previous_distance_to_goal = self.get_distance_to_goal(current_position)
+
+        self.episode_start_time = rospy.get_time()
 
 
     def _set_action(self, action):
@@ -283,6 +287,13 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             rospy.loginfo("TurtleBot3 Reached Goal==>"+str(distance_to_goal))
             self._episode_done = True
 
+        current_time = rospy.get_time()
+        elapsed_time = current_time - self.episode_start_time
+
+        if elapsed_time > self.timeout:
+            rospy.logwarn("TurtleBot3 Timeout==>"+str(elapsed_time)+">"+str(self.timeout))
+            self._episode_done = True
+
         return self._episode_done
 
     def _compute_reward(self, observations, done):
@@ -314,6 +325,9 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             if distance_to_goal <= self.goal_distance_threshold:
                 reward = self.goal_reached_reward
                 rospy.loginfo("Goal reached, reward: " + str(reward))
+            elif rospy.get_time() -self.episode_start_time > self.timeout:
+                reward = -0.5 * self.end_episode_points
+                rospy.logwarn("Timeout, negative reward: " + str(reward))
             # Negative reward for crashing
             else:
                 reward = -1*self.end_episode_points
