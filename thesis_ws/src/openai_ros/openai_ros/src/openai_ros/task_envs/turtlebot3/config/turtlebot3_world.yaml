@@ -29,7 +29,7 @@ turtlebot3: #namespace
     goal_position_y: 4.0
     goal_distance_threshold: 0.1
     goal_reached_reward: 500.0
-    closer_to_goal_reward: 10.0
+    closer_to_goal_reward: 20.0
 
     timeout: 120.0 # Timeout in seconds
 
