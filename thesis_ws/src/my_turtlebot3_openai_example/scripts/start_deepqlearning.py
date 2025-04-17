@@ -42,22 +42,49 @@ class ReplayMemory(object):
 
 class DQN(nn.Module):
 
-    def __init__(self, inputs, outputs):
+    def __init__(self, inputs, outputs, image_height=60, image_width=80):
         super(DQN, self).__init__()
-        self.fc1 = nn.Linear(inputs, 64)
-        self.fc2 = nn.Linear(64, 128)
-        self.fc3 = nn.Linear(128, 64)
-        self.head = nn.Linear(64, outputs)
+        self.image_height = image_height
+        self.image_width = image_width
+
+        # convolutional layers for depth image
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=8, stride=4)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
+        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
+
+        conv_output_size = self._get_conv_output_size()
+
+        # network branch for goal info
+        self.goal_fc = nn.Linear(2, 32)
+
+        self.combined_fc = nn.Linear(conv_output_size + 32, 256)
+        self.head = nn.Linear(256, outputs)
+
+    def _get_conv_output_size(self):
+        x = torch.zeros(1, 1, self.image_height, self.image_width)
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        return int(numpy.prod(x.size()))
 
     # Called with either one element to determine next action, or a batch
     # during optimization. Returns tensor([[left0exp,right0exp]...]).
     def forward(self, x):
-        x = x.to(device)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(x))
-        return self.head(x)
+        # split input into depth image and goal info
+        depth_img = x[:, :-2].view(-1, 1, self.image_height, self.image_width)
+        goal_info = x[:, -2:]
 
+        depth_features = F.relu(self.conv1(depth_img))
+        depth_features = F.relu(self.conv2(depth_features))
+        depth_features = F.relu(self.conv3(depth_features))
+        depth_features = depth_features.view(depth_features.size(0), -1)
+
+        goal_features = F.relu(self.goal_fc(goal_info))
+
+        combined_features = torch.cat((depth_features, goal_features), dim=1)
+        combined_features = F.relu(self.combined_fc(combined_features))
+
+        return self.head(combined_features)
 
 def select_action(state, eps_start, eps_end, eps_decay):
     global steps_done
@@ -256,7 +283,9 @@ if __name__ == '__main__':
     target_net.load_state_dict(policy_net.state_dict())
     target_net.eval()
 
-    optimizer = optim.Adam(policy_net.parameters(), lr=1e-4)
+    optimizer = optim.Adam(policy_net.parameters(), lr=5e-5)
+    # potentially use a LRScheduler
+
     memory = ReplayMemory(10000)
     episode_durations = []
     steps_done = 0

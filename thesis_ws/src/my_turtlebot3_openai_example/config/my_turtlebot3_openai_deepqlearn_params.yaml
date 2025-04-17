@@ -11,7 +11,7 @@ turtlebot3: #namespace
     epsilon_end: 0.05
     epsilon_decay: 25000    # 20k is good for 5k episodes
     n_episodes: 10000
-    target_update: 10
+    target_update: 100
     batch_size: 128
 
     running_step: 0.06 # Time for each step
