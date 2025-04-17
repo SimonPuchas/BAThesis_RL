@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+/home/simon/PathFinderRL/thesis_ws/src/my_turtlebot3_openai_example/checkpoints_*
+
 # User-specific files
 *.rsuser
 *.suo
