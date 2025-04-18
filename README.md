@@ -1,4 +1,17 @@
-# BAThesis_RL
+# PathFinderRL
+
+This repository represents the practical work of my Bachelor Thesis. 
+
+## Introduction
+
+I use the OpenAI gym with multiple modifications to train an RL agent to navigate to a goal point without crashing. The modifications are:
+- Using a depth camera instead of the LiDAR for observations
+- Goal point navigation instead of simply trying to survive as long as possible
+- new custom maze world
+- general modifications to the NN architecture, reward structure, etc.
 
 
-launch sequence towards the map: start_training.launch --> uses turtlebot3_world.py to launch start_world.launch --> uses turtlebot3.world to get to model.sdf which defines the turtle-shaped world
+## Security Disclaimer
+
+Be careful when using torch.load() with weights_only=True to load .pt files, as there was a security breach detected with it.
+More details can be found here https://github.com/advisories/GHSA-53q9-r3pm-6pq6
