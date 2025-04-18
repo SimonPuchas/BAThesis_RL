@@ -9,8 +9,8 @@ turtlebot3: #namespace
     gamma: 0.97
     epsilon_start: 0.95
     epsilon_end: 0.05
-    epsilon_decay: 25000    # 20k is good for 5k episodes
-    n_episodes: 10000
+    epsilon_decay: 2000   # 20k is good for 5k episodes
+    n_episodes: 500
     target_update: 100
     batch_size: 128 # maybe increase to 256
 

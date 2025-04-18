@@ -7,7 +7,7 @@ turtlebot3: #namespace
 
     linear_forward_speed: 0.35 # Spwwed for ging fowards
     linear_turn_speed: 0.05 # Lienare speed when turning
-    angular_speed: 0.3 # Angular speed when turning Left or Right
+    angular_speed: 0.4 # Angular speed when turning Left or Right
     init_linear_forward_speed: 0.0 # Initial linear speed in which we start each episode
     init_linear_turn_speed: 0.0 # Initial angular speed in shich we start each episode
     
@@ -29,7 +29,7 @@ turtlebot3: #namespace
     goal_position_y: 4.0
     goal_distance_threshold: 0.1
     goal_reached_reward: 500.0
-    closer_to_goal_reward: 20.0
+    closer_to_goal_reward: 200.0
 
     timeout: 120.0 # Timeout in seconds
 

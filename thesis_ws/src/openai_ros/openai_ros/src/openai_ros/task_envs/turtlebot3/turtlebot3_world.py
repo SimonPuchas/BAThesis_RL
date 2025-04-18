@@ -326,7 +326,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
                 rospy.loginfo("Goal reached, reward: " + str(reward))
             # Negative reward for taking too long
             elif rospy.get_time() -self.episode_start_time > self.timeout:
-                reward = -0.5 * self.end_episode_points
+                reward = -2 * self.end_episode_points
                 rospy.logwarn("Timeout, negative reward: " + str(reward))
             # Negative reward for crashing
             else:

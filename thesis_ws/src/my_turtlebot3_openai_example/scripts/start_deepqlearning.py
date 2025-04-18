@@ -70,6 +70,14 @@ class DQN(nn.Module):
     # Called with either one element to determine next action, or a batch
     # during optimization. Returns tensor([[left0exp,right0exp]...]).
     def forward(self, x):
+
+        # check if input is a single sample or a batch
+        is_single = x.dim() == 1
+
+        # if single sample, add batch dimension
+        if is_single:
+            x = x.unsqueeze(0)
+
         # split input into depth image and goal info
         depth_img = x[:, :-2].view(-1, 1, self.image_height, self.image_width)
         goal_info = x[:, -2:]
@@ -84,7 +92,13 @@ class DQN(nn.Module):
         combined_features = torch.cat((depth_features, goal_features), dim=1)
         combined_features = F.relu(self.combined_fc(combined_features))
 
-        return self.head(combined_features)
+        output = self.head(combined_features)
+
+        if is_single:
+            return output.squeeze(0)
+        else:
+            return output
+
 
 def select_action(state, eps_start, eps_end, eps_decay):
     global steps_done
@@ -168,7 +182,7 @@ def plot_rewards(episode_rewards, episode_n, window_size=100):
     
     rospack = rospkg.RosPack()
     pkg_path = rospack.get_path('my_turtlebot3_openai_example')
-    plt.savefig(f'{pkg_path}/training_results/reward_plot_{episode_n}.png')
+    plt.savefig(f'{pkg_path}/training_results/reward_plot.png')
     plt.close()
     
 # logic to save the model
