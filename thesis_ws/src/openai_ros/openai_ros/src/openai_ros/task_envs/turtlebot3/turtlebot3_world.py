@@ -305,20 +305,22 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.previous_distance_to_goal = distance_to_goal
 
         if not done:
-            # Basic rewards for moving
+            # Basic rewards for moving, not really needed as we want to reach the goal
+            '''
             if self.last_action == "FORWARDS":
                 base_reward = self.forwards_reward
             else:
                 base_reward = self.turn_reward
-
+            '''    
             # Dynamic rewards for getting closer or further
             if distance_difference > 0:
-                goal_reward = self.closer_to_goal_reward * distance_difference
+                goal_reward = self.closer_to_goal_reward
                 rospy.logdebug("Getting closer to goal, reward: " + str(goal_reward))
             else:
-                goal_reward = self.closer_to_goal_reward * distance_difference
+                goal_reward = self.closer_to_goal_reward * -1
                 rospy.logdebug("Getting further from goal, reward: " + str(goal_reward))
-            reward = base_reward + goal_reward
+            #reward = base_reward + goal_reward
+            reward = goal_reward
         else:
             # Reward for reaching goal
             if distance_to_goal <= self.goal_distance_threshold:
