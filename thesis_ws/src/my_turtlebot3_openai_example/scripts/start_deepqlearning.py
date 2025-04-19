@@ -132,13 +132,13 @@ def optimize_model(batch_size, gamma):
     non_final_next_states = torch.stack([s for s in batch.next_state
                                                 if s is not None])
     state_batch = torch.stack(batch.state)
-    action_batch = torch.stack(batch.action)
-    reward_batch = torch.stack(batch.reward)
+    action_batch = torch.cat(batch.action)
+    reward_batch = torch.cat(batch.reward)
 
     # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
     # columns of actions taken. These are the actions which would've been taken
     # for each batch state according to policy_net
-    state_action_values = policy_net(state_batch).gather(1, torch.squeeze(action_batch, 2))
+    state_action_values = policy_net(state_batch).gather(1, action_batch)
 
     # Compute V(s_{t+1}) for all next states.
     # Expected values of actions for non_final_next_states are computed based
