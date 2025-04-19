@@ -211,7 +211,9 @@ def save_checkpoint(episode, policy_net, target_net, optimizer, memory, episode_
     rospy.loginfo(f"Checkpoint saved at episode {episode}")
     
     # Keep only the last 4 checkpoints
-    checkpoint_files = sorted([f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint_episode_')])
+    checkpoint_files = sorted(
+    [f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint_episode_')],
+    key=lambda x: int(x.split('_')[-1].split('.')[0]))
     if len(checkpoint_files) > 4:
         for old_file in checkpoint_files[:-4]:
             os.remove(os.path.join(checkpoint_dir, old_file))
@@ -235,7 +237,9 @@ def get_latest_checkpoint():
     if not os.path.exists(checkpoint_dir):
         return None
     
-    checkpoint_files = sorted([f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint_episode_')])
+    checkpoint_files = sorted(
+    [f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint_episode_')],
+    key=lambda x: int(x.split('_')[-1].split('.')[0]))
     if not checkpoint_files:
         return None
     
