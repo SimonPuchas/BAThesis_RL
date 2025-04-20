@@ -104,7 +104,7 @@ def select_action(state, eps_start, eps_end, eps_decay):
     global steps_done
     sample = random.random()
     eps_threshold = eps_end + (eps_start - eps_end) * \
-        math.exp(-1. * (steps_done/8) / eps_decay)  # steps/6 is good for 5k episodes
+        math.exp(-1. * (steps_done/8) / eps_decay)
     steps_done += 1
     if sample > eps_threshold:
         with torch.no_grad():
@@ -304,7 +304,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(policy_net.parameters(), lr=5e-5)
     # potentially use a LRScheduler
 
-    memory = ReplayMemory(10000)
+    memory = ReplayMemory(100000)
     episode_durations = []
     steps_done = 0
 

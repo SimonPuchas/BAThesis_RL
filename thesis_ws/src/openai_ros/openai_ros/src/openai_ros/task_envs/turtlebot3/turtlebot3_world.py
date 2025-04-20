@@ -284,7 +284,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         distance_to_goal = self.get_distance_to_goal(current_position)
 
         if distance_to_goal <= self.goal_distance_threshold:
-            rospy.loginfo("TurtleBot3 Reached Goal==>"+str(distance_to_goal))
+            rospy.logwarn("TurtleBot3 Reached Goal==>"+str(distance_to_goal))
             self._episode_done = True
 
         current_time = rospy.get_time()
@@ -325,7 +325,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             # Reward for reaching goal
             if distance_to_goal <= self.goal_distance_threshold:
                 reward = self.goal_reached_reward
-                rospy.loginfo("Goal reached, reward: " + str(reward))
+                rospy.logwarn("Goal reached, reward: " + str(reward))
             # Negative reward for taking too long
             elif rospy.get_time() -self.episode_start_time > self.timeout:
                 reward = -2 * self.end_episode_points
