@@ -312,6 +312,10 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             else:
                 base_reward = self.turn_reward
             '''    
+
+            # maybe add small penalty per step, to encourage faster learning
+            
+
             # Dynamic rewards for getting closer or further
             if distance_difference > 0:
                 goal_reward = self.closer_to_goal_reward
@@ -328,7 +332,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
                 rospy.logwarn("Goal reached, reward: " + str(reward))
             # Negative reward for taking too long
             elif rospy.get_time() -self.episode_start_time > self.timeout:
-                reward = -2 * self.end_episode_points
+                reward = -1 * self.end_episode_points
                 rospy.logwarn("Timeout, negative reward: " + str(reward))
             # Negative reward for crashing
             else:

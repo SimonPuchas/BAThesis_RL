@@ -62,7 +62,7 @@ class DQN(nn.Module):
 
     def _get_conv_output_size(self):
         x = torch.zeros(1, 1, self.image_height, self.image_width)
-        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv1(x))   # maybe try SiLU instead of ReLU
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
         return int(numpy.prod(x.size()))
@@ -227,6 +227,7 @@ def load_checkpoint(checkpoint_path):
     
     rospy.loginfo(f"Loading checkpoint from {checkpoint_path}")
     checkpoint = torch.load(checkpoint_path)
+
     return checkpoint
 
 def get_latest_checkpoint():
@@ -283,6 +284,7 @@ if __name__ == '__main__':
     running_step = rospy.get_param("/turtlebot3/running_step")
 
     load_model = rospy.get_param("/turtlebot3/load_model", False)
+    reset_epsilon = rospy.get_param("/turtlebot3/reset_epsilon", False)
 
     # Initialises the algorithm that we are going to use for learning
     # if gpu is to be used
@@ -301,7 +303,7 @@ if __name__ == '__main__':
     target_net.load_state_dict(policy_net.state_dict())
     target_net.eval()
 
-    optimizer = optim.Adam(policy_net.parameters(), lr=5e-5)
+    optimizer = optim.Adam(policy_net.parameters(), lr=1e-4)
     # potentially use a LRScheduler
 
     memory = ReplayMemory(100000)
@@ -326,6 +328,9 @@ if __name__ == '__main__':
                     episode_rewards = checkpoint['episode_rewards']
                     steps_done = checkpoint['steps_done']
                     highest_reward = checkpoint['highest_reward']
+                    if reset_epsilon:
+                        epsilon = 0.3
+                        rospy.loginfo("Resetting epsilon to {epsilon}")
                     rospy.loginfo(f"Resuming training from episode {start_episode}")
 
     # Starts the main training loop: the one about the episodes to do
@@ -385,7 +390,7 @@ if __name__ == '__main__':
         if i_episode % 100 == 0:
             plot_rewards(episode_rewards, i_episode)
 
-        if (i_episode + 1) % 50 == 0:
+        if (i_episode + 1) % 100 == 0:
             save_checkpoint(
                 i_episode + 1, 
                 policy_net, 
