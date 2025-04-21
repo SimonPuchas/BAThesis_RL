@@ -314,7 +314,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             '''    
 
             # maybe add small penalty per step, to encourage faster learning
-            
+            step_penalty = -0.1
 
             # Dynamic rewards for getting closer or further
             if distance_difference > 0:
@@ -324,7 +324,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
                 goal_reward = self.closer_to_goal_reward * -1
                 rospy.logdebug("Getting further from goal, reward: " + str(goal_reward))
             #reward = base_reward + goal_reward
-            reward = goal_reward
+            reward = goal_reward + step_penalty
         else:
             # Reward for reaching goal
             if distance_to_goal <= self.goal_distance_threshold:
