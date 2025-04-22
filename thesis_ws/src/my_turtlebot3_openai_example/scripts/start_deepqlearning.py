@@ -100,11 +100,8 @@ class DQN(nn.Module):
             return output
 
 
-def select_action(state, eps_start, eps_end, eps_decay):
+def select_action(state, eps_start, eps_end, eps_decay, warmup_steps, decay_steps):
     global steps_done
-
-    warmup_steps = int(eps_decay * 0.1)
-    decay_steps = int(eps_decay)
 
     eps_threshold = get_epsilon(steps_done, warmup_steps, decay_steps, eps_start, eps_end)
 
@@ -381,7 +378,7 @@ if __name__ == '__main__':
         for t in count():
             #rospy.logwarn("############### Start Step=>" + str(t))
             # Select and perform an action
-            action, epsilon = select_action(state, epsilon_start, epsilon_end, epsilon_decay)
+            action, epsilon = select_action(state, epsilon_start, epsilon_end, epsilon_decay, warmup_steps, decay_steps)
             rospy.logdebug("Next action is:%d", action)
 
             observation, reward, done, info = env.step(action.item())
@@ -440,7 +437,7 @@ if __name__ == '__main__':
         h, m = divmod(m, 60)
         rospy.logerr(("EP: " + str(i_episode + 1) + " - gamma: " + str(
             round(gamma, 2)) + " - epsilon: " + str(round(epsilon, 2)) + "] - Reward: " + str(
-            cumulated_reward) + "     Time: %d:%02d:%02d" % (h, m, s) + "Steps done: " +steps_done))
+            cumulated_reward) + "  Time: %d:%02d:%02d" % (h, m, s) + "  Steps done: " + str(steps_done)))
 
     rospy.loginfo(("\n|" + str(n_episodes) + "|" + str(gamma) + "|" + str(epsilon_start) + "*" +
                    str(epsilon_decay) + "|" + str(highest_reward) + "| PICTURE |"))

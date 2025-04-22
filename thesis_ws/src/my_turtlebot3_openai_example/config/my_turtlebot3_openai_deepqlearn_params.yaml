@@ -19,5 +19,5 @@ turtlebot3: #namespace
     load_model: false   # specifies if we want to load a model or start training from scratch
     reset_epsilon: false # specifies if we want to reset the epsilon value when loading a model
 
-    epsilon_warmup_steps: 5000
-    epsilon_decay_steps: 30000
+    epsilon_warmup_steps: 35000
+    epsilon_decay_steps: 550000
