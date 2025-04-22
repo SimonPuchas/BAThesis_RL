@@ -9,12 +9,12 @@ turtlebot3: #namespace
     gamma: 0.97
     epsilon_start: 0.95
     epsilon_end: 0.05
-    epsilon_decay: 22000   # 20k is good for 5k episodes
+    epsilon_decay: 30000
     n_episodes: 5000
     target_update: 50
     batch_size: 256 # maybe increase to 256
 
     running_step: 0.06 # Time for each step
 
-    load_model: true   # specifies if we want to load a model or start training from scratch
+    load_model: false   # specifies if we want to load a model or start training from scratch
     reset_epsilon: false # specifies if we want to reset the epsilon value when loading a model

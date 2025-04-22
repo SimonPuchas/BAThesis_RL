@@ -119,6 +119,11 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.closer_to_goal_reward = rospy.get_param('/turtlebot3/closer_to_goal_reward', 5.0)
         self.previous_distance_to_goal = None
 
+        self.prev_position = None
+        self.stuck_count = 0
+        self.stuck_threshold = rospy.get_param('/turtlebot3/stuck_threshold', 5)
+        self.position_tolerance = rospy.get_param('/turtlebot3/position_tolerance', 0.01)
+
 
     def _set_init_pose(self):
         """Sets the Robot in its init pose
@@ -287,12 +292,30 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             rospy.logwarn("TurtleBot3 Reached Goal==>"+str(distance_to_goal))
             self._episode_done = True
 
+        # Check if the robot takes too long
         current_time = rospy.get_time()
         elapsed_time = current_time - self.episode_start_time
 
         if elapsed_time > self.timeout:
             rospy.logwarn("TurtleBot3 Timeout==>"+str(elapsed_time)+">"+str(self.timeout))
             self._episode_done = True
+
+        # Check if the robot is stuck
+        if self.prev_position is not None:
+            dx = abs(current_position.x - self.prev_position.x)
+            dy = abs(current_position.y - self.prev_position.y)
+
+            if dx < self.position_tolerance and dy < self.position_tolerance:
+                self.stuck_count += 1
+                if self.stuck_count >= self.stuck_threshold:
+                    rospy.logwarn("TurtleBot3 is Stuck")
+                    self._episode_done = True
+            else:
+                self.stuck_count = 0
+        else:
+            self.prev_position = current_position
+        
+        self.prev_position = current_position
 
         return self._episode_done
 
@@ -314,14 +337,14 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             '''    
 
             # maybe add small penalty per step, to encourage faster learning
-            step_penalty = -0.1
+            step_penalty = -0.2
 
             # Dynamic rewards for getting closer or further
             if distance_difference > 0:
-                goal_reward = self.closer_to_goal_reward
+                goal_reward = self.closer_to_goal_reward * distance_difference
                 rospy.logdebug("Getting closer to goal, reward: " + str(goal_reward))
             else:
-                goal_reward = self.closer_to_goal_reward * -1
+                goal_reward = self.closer_to_goal_reward * distance_difference
                 rospy.logdebug("Getting further from goal, reward: " + str(goal_reward))
             #reward = base_reward + goal_reward
             reward = goal_reward + step_penalty
