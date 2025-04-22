@@ -102,10 +102,18 @@ class DQN(nn.Module):
 
 def select_action(state, eps_start, eps_end, eps_decay):
     global steps_done
+
+    warmup_steps = int(eps_decay * 0.1)
+    decay_steps = int(eps_decay)
+
+    eps_threshold = get_epsilon(steps_done, warmup_steps, decay_steps, eps_start, eps_end)
+
     sample = random.random()
-    # add new decay strategy
+    '''
+    Old exponential decay strategy
     eps_threshold = eps_end + (eps_start - eps_end) * \
         math.exp(-1. * (steps_done/8) / eps_decay)
+    '''
     steps_done += 1
     if sample > eps_threshold:
         with torch.no_grad():
@@ -116,6 +124,27 @@ def select_action(state, eps_start, eps_end, eps_decay):
     else:
         return torch.tensor([[random.randrange(n_actions)]], device=device, dtype=torch.long), eps_threshold
 
+def get_epsilon(step, warmup_steps, decay_steps, epsilon_start, epsilon_end):
+    '''
+    Calculating epsilon based on a linear decay strategy
+    
+    Args:
+        warmup_steps: Number of steps to maintain initial epsilon (full exploration)
+        decay_steps: Number of steps over which to decay epsilon from start to end
+        
+    Returns:
+        Current epsilon value
+    '''
+    if step < warmup_steps:
+        # Initial exploration phase - keep starting epsilon
+        return epsilon_start
+    elif step < warmup_steps + decay_steps:
+        # Linear decay phase
+        decay_progress = (step - warmup_steps) / decay_steps
+        return epsilon_start - decay_progress * (epsilon_start - epsilon_end)
+    else:
+        # Final exploitation phase
+        return epsilon_end
 
 def optimize_model(batch_size, gamma):
     if len(memory) < batch_size:
@@ -287,6 +316,9 @@ if __name__ == '__main__':
     load_model = rospy.get_param("/turtlebot3/load_model", False)
     reset_epsilon = rospy.get_param("/turtlebot3/reset_epsilon", False)
 
+    warmup_steps = rospy.get_param("/turtlebot3/epsilon_warmup_steps", int(epsilon_decay * 0.1))
+    decay_steps = rospy.get_param("/turtlebot3/epsilon_decay_steps", epsilon_decay)
+
     # Initialises the algorithm that we are going to use for learning
     # if gpu is to be used
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -408,7 +440,7 @@ if __name__ == '__main__':
         h, m = divmod(m, 60)
         rospy.logerr(("EP: " + str(i_episode + 1) + " - gamma: " + str(
             round(gamma, 2)) + " - epsilon: " + str(round(epsilon, 2)) + "] - Reward: " + str(
-            cumulated_reward) + "     Time: %d:%02d:%02d" % (h, m, s)))
+            cumulated_reward) + "     Time: %d:%02d:%02d" % (h, m, s) + "Steps done: " +steps_done))
 
     rospy.loginfo(("\n|" + str(n_episodes) + "|" + str(gamma) + "|" + str(epsilon_start) + "*" +
                    str(epsilon_decay) + "|" + str(highest_reward) + "| PICTURE |"))
