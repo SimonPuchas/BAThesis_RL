@@ -23,7 +23,7 @@ import torch.nn.functional as F
 
 import os
 
-
+'''
 class ReplayMemory(object):
 
     def __init__(self, capacity):
@@ -38,7 +38,46 @@ class ReplayMemory(object):
 
     def __len__(self):
         return len(self.memory)
+'''
 
+class PriorityReplayMemory(object):
+    def __init__(self, capacity, alpha=0.6, beta_start=0.4, beta_frames=100000):
+        self.alpha = alpha  # how much prioritization is used (1.0 is full, 0.0 is none)
+        self.beta_start = beta_start    # initial beta for importance sampling (bias correction)
+        self.beta_frames = beta_frames  # frames over which beta is annealed to 1.0
+        self.capacity = capacity
+        self.memory = deque([], maxlen=capacity)
+        self.priorities = deque([], maxlen=capacity)
+        self.frame = 0
+
+    def push(self, *args, priority=None):
+        if priority is None:
+            priority = max(self.priorities) if self.priorities else 1.0
+        self.memory.append(Transition(*args))
+        self.priorities.append(priority)
+
+    def sample(self, batch_size):
+        self.frame += 1
+        beta = min(1.0, self.beta_start + self.frame * (1.0 - self.beta_start) / self.beta_frames)
+
+        priorities = numpy.array(self.priorities)
+        probabilities = priorities ** self.alpha
+        probabilities /= probabilities.sum()
+
+        indices = numpy.random.choice(len(self.memory), batch_size, p=probabilities)
+        samples = [self.memory[idx] for idx in indices]
+
+        weights = (len(self.memory) * probabilities[indices]) ** (-beta)
+        weights /= weights.max()
+
+        return samples, indices, torch.FloatTensor(weights).to(device)
+    
+    def update_priorities(self, indices, priorities):
+        for idx, priority in zip(indices, priorities):
+            self.priorities[idx] = priority
+
+    def __len__(self):
+        return len(self.memory)
 
 class DQN(nn.Module):
 
@@ -62,7 +101,7 @@ class DQN(nn.Module):
 
     def _get_conv_output_size(self):
         x = torch.zeros(1, 1, self.image_height, self.image_width)
-        x = F.relu(self.conv1(x))   # maybe try SiLU instead of ReLU
+        x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
         return int(numpy.prod(x.size()))
@@ -82,7 +121,7 @@ class DQN(nn.Module):
         depth_img = x[:, :-2].view(-1, 1, self.image_height, self.image_width)
         goal_info = x[:, -2:]
 
-        depth_features = F.relu(self.conv1(depth_img))
+        depth_features = F.relu(self.conv1(depth_img)) # maybe try SiLU insted of ReLU
         depth_features = F.relu(self.conv2(depth_features))
         depth_features = F.relu(self.conv3(depth_features))
         depth_features = depth_features.view(depth_features.size(0), -1)
@@ -121,11 +160,11 @@ def select_action(state, eps_start, eps_end, eps_decay):
 def optimize_model(batch_size, gamma):
     if len(memory) < batch_size:
         return
-    transitions = memory.sample(batch_size)
+    samples, indices, weights = memory.sample(batch_size)
     # Transpose the batch (see https://stackoverflow.com/a/19343/3343043 for
     # detailed explanation). This converts batch-array of Transitions
     # to Transition of batch-arrays.
-    batch = Transition(*zip(*transitions))
+    batch = Transition(*zip(*samples))
 
     # Compute a mask of non-final states and concatenate the batch elements
     # (a final state would've been the one after which simulation ended)
@@ -152,13 +191,18 @@ def optimize_model(batch_size, gamma):
     # Compute the expected Q values
     expected_state_action_values = (next_state_values * gamma) + reward_batch
 
+    td_errors = torch.abs(expected_state_action_values.unsqueeze(1) - state_action_values).detach().cpu().numpy()
+
+    memory.update_priorities(indices, td_errors + 1e-5)
+
     # Compute Huber loss
     criterion = nn.SmoothL1Loss()
     loss = criterion(state_action_values, expected_state_action_values.unsqueeze(1))
+    weighted_loss = (loss * weights.unsqueeze(1)).mean()
 
     # Optimize the model
     optimizer.zero_grad()
-    loss.backward()
+    weighted_loss.backward()
     for param in policy_net.parameters():
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
@@ -288,6 +332,10 @@ if __name__ == '__main__':
     load_model = rospy.get_param("/turtlebot3/load_model", False)
     reset_epsilon = rospy.get_param("/turtlebot3/reset_epsilon", False)
 
+    alpha = rospy.get_param("/turtlebot3/alpha", 0.6)
+    beta_start = rospy.get_param("/turtlebot3/beta_start", 0.4)
+    beta_frames = rospy.get_param("/turtlebot3/beta_frames", 100000)
+
     # Initialises the algorithm that we are going to use for learning
     # if gpu is to be used
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -308,7 +356,8 @@ if __name__ == '__main__':
     optimizer = optim.Adam(policy_net.parameters(), lr=1e-4)
     # potentially use a LRScheduler
 
-    memory = ReplayMemory(100000)
+    #memory = ReplayMemory(100000)
+    memory = PriorityReplayMemory(100000, alpha, beta_start, beta_frames)
     episode_durations = []
     steps_done = 0
 
