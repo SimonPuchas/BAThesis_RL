@@ -74,7 +74,10 @@ class PriorityReplayMemory(object):
     
     def update_priorities(self, indices, priorities):
         for idx, priority in zip(indices, priorities):
-            self.priorities[idx] = priority
+            if isinstance(priority, numpy.ndarray):
+                self.priorities[idx] = float(priority.flatten()[0])
+            else:
+                self.priorities[idx] = float(priority)
 
     def __len__(self):
         return len(self.memory)
@@ -192,8 +195,9 @@ def optimize_model(batch_size, gamma):
     expected_state_action_values = (next_state_values * gamma) + reward_batch
 
     td_errors = torch.abs(expected_state_action_values.unsqueeze(1) - state_action_values).detach().cpu().numpy()
+    td_errors_scalar = [float(err[0]) for err in td_errors]
 
-    memory.update_priorities(indices, td_errors + 1e-5)
+    memory.update_priorities(indices, [err + 1e-5 for err in td_errors_scalar])
 
     # Compute Huber loss
     criterion = nn.SmoothL1Loss()
