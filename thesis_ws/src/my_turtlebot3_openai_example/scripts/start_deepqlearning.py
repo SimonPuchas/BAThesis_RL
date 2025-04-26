@@ -23,6 +23,8 @@ import torch.nn.functional as F
 
 import os
 
+import gzip
+
 '''
 class ReplayMemory(object):
 
@@ -257,7 +259,11 @@ def save_checkpoint(episode, policy_net, target_net, optimizer, memory, episode_
     }
     
     checkpoint_path = f'{checkpoint_dir}/checkpoint_episode_{episode}.pt'
-    torch.save(checkpoint, checkpoint_path)
+    #torch.save(checkpoint, checkpoint_path)
+    # use gzip to compress checkpoint files as they are quite large
+    with gzip.open(checkpoint_path + '.gz', 'wb') as f:
+        torch.save(checkpoint, f)
+
     rospy.loginfo(f"Checkpoint saved at episode {episode}")
     
     # Keep only the last 4 checkpoints
@@ -276,9 +282,17 @@ def load_checkpoint(checkpoint_path):
         return None
     
     rospy.loginfo(f"Loading checkpoint from {checkpoint_path}")
-    checkpoint = torch.load(checkpoint_path)
-
-    return checkpoint
+    #checkpoint = torch.load(checkpoint_path)
+    # use gzip to load the file, if its not compressed use standard torch.load
+    try:
+        if checkpoint_path.endswith('.gz'):
+            with gzip.open(checkpoint_path, 'rb') as f:
+                return torch.load(f)
+        else:
+            return torch.load(checkpoint_path)
+    except (gzip.BadGzipFile, RuntimeError, EOFError) as e:
+        rospy.logerr(f"Failed to load checkpoint: {e}")
+        return None
 
 def get_latest_checkpoint():
     rospack = rospkg.RosPack()
@@ -462,7 +476,7 @@ if __name__ == '__main__':
         h, m = divmod(m, 60)
         rospy.logerr(("EP: " + str(i_episode + 1) + " - gamma: " + str(
             round(gamma, 2)) + " - epsilon: " + str(round(epsilon, 2)) + "] - Reward: " + str(
-            cumulated_reward) + "  Time: %d:%02d:%02d" % (h, m, s) + "  Steps done: " + str(steps_done)))
+            cumulated_reward) + " - Time: %d:%02d:%02d" % (h, m, s) + " - Steps done: " + str(steps_done)))
 
     rospy.loginfo(("\n|" + str(n_episodes) + "|" + str(gamma) + "|" + str(epsilon_start) + "*" +
                    str(epsilon_decay) + "|" + str(highest_reward) + "| PICTURE |"))
