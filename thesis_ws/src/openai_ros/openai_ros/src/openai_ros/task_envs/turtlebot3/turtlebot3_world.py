@@ -344,7 +344,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
                 goal_reward = self.closer_to_goal_reward #* distance_difference
                 rospy.logdebug("Getting closer to goal, reward: " + str(goal_reward))
             else:
-                goal_reward = self.closer_to_goal_reward * -0.5 #* distance_difference
+                goal_reward = self.closer_to_goal_reward * -1 #* distance_difference
                 rospy.logdebug("Getting further from goal, reward: " + str(goal_reward))
             #reward = base_reward + goal_reward
             reward = goal_reward + step_penalty

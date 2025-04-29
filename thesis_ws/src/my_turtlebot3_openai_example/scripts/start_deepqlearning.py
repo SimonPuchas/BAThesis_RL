@@ -150,7 +150,7 @@ def select_action(state, eps_start, eps_end, eps_decay):
     sample = random.random()
     
     eps_threshold = eps_end + (eps_start - eps_end) * \
-        math.exp(-1. * (steps_done/8) / eps_decay)
+        math.exp(-1. * (steps_done/8) / eps_decay)  # steps / 8, to make it easier to control the decay
     
     steps_done += 1
     if sample > eps_threshold:
