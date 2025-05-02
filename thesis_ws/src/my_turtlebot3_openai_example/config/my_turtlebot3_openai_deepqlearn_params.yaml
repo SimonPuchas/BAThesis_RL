@@ -16,7 +16,7 @@ turtlebot3: #namespace
 
     running_step: 0.06 # Time for each step
 
-    load_model: true  # specifies if we want to load a model or start training from scratch
+    load_model: false  # specifies if we want to load a model or start training from scratch
     reset_epsilon: false # specifies if we want to reset the epsilon value when loading a model
 
     alpha: 0.6

@@ -197,6 +197,7 @@ def optimize_model(batch_size, gamma):
     for param in policy_net.parameters():
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
+    lr_scheduler.step()
 
 def soft_update(target, source, tau=0.001):
     """
@@ -373,7 +374,7 @@ if __name__ == '__main__':
     target_net.eval()
 
     optimizer = optim.Adam(policy_net.parameters(), lr=1e-4)
-    # potentially use a LRScheduler
+    lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=500, gamma=0.5)
 
     #memory = ReplayMemory(100000)
     memory = PriorityReplayMemory(100000, alpha, beta_start, beta_frames)
@@ -433,7 +434,12 @@ if __name__ == '__main__':
             next_state = torch.tensor(observation, device=device, dtype=torch.float)
 
             # Store the transition in memory
-            memory.push(state, action, next_state, reward)
+            if reward.item() > 150:
+                success_priority_bonus = 10.0
+                memory.push(state, action, next_state, reward, priority = success_priority_bonus)
+                rospy.loginfo(f"High reward episode. Storing transition with higher priority: {success_priority_bonus}")
+            else:
+                memory.push(state, action, next_state, reward)
 
             # Perform one step of the optimization (on the policy network)
             rospy.logdebug("# state we were=>" + str(state))
