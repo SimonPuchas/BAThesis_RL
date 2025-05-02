@@ -92,9 +92,9 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             self.cv_bridge = CvBridge()
 
         if self.use_camera:
-            obs_size = self.depth_image_size[0] * self.depth_image_size[1] + 2  # +2 for distance and angle
-            high = numpy.append(numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 6.0), [1.0, 1.0])
-            low = numpy.append(numpy.full((self.depth_image_size[0] * self.depth_image_size[1]), 0.0), [0.0, -1.0])
+            num_sectors = 8
+            high = numpy.append(numpy.full(num_sectors, 10.0), [1.0, 1.0])
+            low = numpy.append(numpy.full(num_sectors, 0.0), [0.0, -1.0])
         else:
             laser_scan = self.get_laser_scan()
             num_laser_readings = int(len(laser_scan.ranges)/self.new_ranges)
@@ -229,39 +229,86 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
 
     def process_depth_image(self, depth_image_raw):
         """
-        Process the depth image to get a simplified representation
+        Process the depth image to get a simplified representation by extracting
+        key sector-based features rather than using the entire image
         :param depth_image_raw: Raw depth image from the camera
-        :return: Processed depth values as a flattened array
+        :return: Processed depth features (minimum distances in sectors)
         """
         self._episode_done = False
         
+        # Default features if image is not available
+        # [front_min, front_left_min, left_min, back_left_min, back_min, back_right_min, right_min, front_right_min]
+        num_sectors = 8
+        default_features = numpy.full(num_sectors, 10.0)
+        
         if depth_image_raw is None:
-            return numpy.zeros(self.depth_image_size[0] * self.depth_image_size[1])
+            return default_features
         
         try:
             cv_depth_image = self.cv_bridge.imgmsg_to_cv2(depth_image_raw, desired_encoding="passthrough")
             
-            # Resize to reduce dimensionality
-            resized_depth = cv2.resize(cv_depth_image, 
-                                      (self.depth_image_size[1], self.depth_image_size[0]), 
-                                      interpolation=cv2.INTER_AREA)
-            
-            # Check if robot is too close to an obstacle
-            if numpy.nanmin(resized_depth) < self.depth_threshold and numpy.nanmin(resized_depth) > 0:
-                rospy.logerr("TurtleBot3 is Too Close to obstacle in depth image ==> " + 
-                             str(numpy.nanmin(resized_depth)) + " < " + str(self.depth_threshold))
-                self._episode_done = True
+            # First resize to an intermediate size to reduce noise
+            resized_depth = cv2.resize(cv_depth_image, (40, 30), interpolation=cv2.INTER_AREA)
             
             # Replace NaN and Inf values
             resized_depth = numpy.nan_to_num(resized_depth, nan=10.0, posinf=10.0, neginf=0.0)
-            
             resized_depth = numpy.clip(resized_depth, 0.0, 10.0)
             
-            return resized_depth.flatten()
+            # Define sectors (vertical slices of the image)
+            # We define 8 sectors spanning 360 degrees around the robot
+            height, width = resized_depth.shape
+            
+            # Create sector masks - these divide the image into angular segments
+            sector_features = []
+            
+            # Front sector (central portion of image)
+            front_sector = resized_depth[5:25, 15:25] 
+            front_min = numpy.min(front_sector)
+            sector_features.append(front_min)
+            
+            # Front-left sector
+            front_left_sector = resized_depth[5:25, 5:15]
+            front_left_min = numpy.min(front_left_sector)
+            sector_features.append(front_left_min)
+            
+            # Left sector
+            left_sector = resized_depth[5:25, 0:5]
+            left_min = numpy.min(left_sector)
+            sector_features.append(left_min)
+            
+            # Back-left sector (would need depth cameras covering this area)
+            back_left_min = 10.0  # Default maximum range as this is likely not visible
+            sector_features.append(back_left_min)
+            
+            # Back sector (would need depth cameras covering this area)
+            back_min = 10.0  # Default maximum range as this is likely not visible
+            sector_features.append(back_min)
+            
+            # Back-right sector (would need depth cameras covering this area)
+            back_right_min = 10.0  # Default maximum range as this is likely not visible
+            sector_features.append(back_right_min)
+            
+            # Right sector
+            right_sector = resized_depth[5:25, 35:40]
+            right_min = numpy.min(right_sector)
+            sector_features.append(right_min)
+            
+            # Front-right sector
+            front_right_sector = resized_depth[5:25, 25:35]
+            front_right_min = numpy.min(front_right_sector)
+            sector_features.append(front_right_min)
+            
+            # Check if robot is too close to an obstacle
+            min_distance = numpy.min(sector_features)
+            if min_distance < self.depth_threshold and min_distance > 0:
+                rospy.logerr(f"TurtleBot3 is Too Close to obstacle in depth image ==> {min_distance} < {self.depth_threshold}")
+                self._episode_done = True
+            
+            return numpy.array(sector_features)
             
         except Exception as e:
-            rospy.logerr("Error processing depth image: %s", str(e))
-            return numpy.zeros(self.depth_image_size[0] * self.depth_image_size[1])
+            rospy.logerr(f"Error processing depth image: {str(e)}")
+            return default_features
 
     def _is_done(self, observations):
 
@@ -327,27 +374,27 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         distance_difference = self.previous_distance_to_goal - distance_to_goal
         self.previous_distance_to_goal = distance_to_goal
 
+        orientation = odometry.pose.pose.orientation
+        orientation_list = [orientation.x, orientation.y, orientation.z, orientation.w]
+        _, _, yaw = self.euler_from_quaternion(orientation_list)
+        angle_to_goal = numpy.arctan2(self.goal_position.y - current_position.y,
+                                       self.goal_position.x - current_position.x)
+        angle_difference = abs(angle_to_goal - yaw)
+
         if not done:
-            # Basic rewards for moving, not really needed as we want to reach the goal
-            '''
-            if self.last_action == "FORWARDS":
-                base_reward = self.forwards_reward
-            else:
-                base_reward = self.turn_reward
-            '''    
 
             # maybe add small penalty per step, to encourage faster learning
-            step_penalty = -0.1 # maybe reduce this again
+            step_penalty = -0.05 # maybe reduce this again
+
+            # Calculate normalized distance for reward scaling
+            normalized_distance = min(1.0, distance_to_goal / 10.0)
 
             # Dynamic rewards for getting closer or further
-            if distance_difference > 0:
-                goal_reward = self.closer_to_goal_reward #* distance_difference
-                rospy.logdebug("Getting closer to goal, reward: " + str(goal_reward))
-            else:
-                goal_reward = self.closer_to_goal_reward * -1 #* distance_difference
-                rospy.logdebug("Getting further from goal, reward: " + str(goal_reward))
-            #reward = base_reward + goal_reward
-            reward = goal_reward + step_penalty
+            goal_reward = self.closer_to_goal_reward * (distance_difference *(1 + (1 - normalized_distance)))
+
+            angle_penalty = -0.3 * angle_difference
+
+            reward = goal_reward + step_penalty + angle_penalty
         else:
             # Reward for reaching goal
             if distance_to_goal <= self.goal_distance_threshold:

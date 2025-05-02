@@ -86,30 +86,17 @@ class PriorityReplayMemory(object):
 
 class DQN(nn.Module):
 
-    def __init__(self, inputs, outputs, image_height=60, image_width=80):
+    def __init__(self, inputs, outputs):
         super(DQN, self).__init__()
-        self.image_height = image_height
-        self.image_width = image_width
-
-        # convolutional layers for depth image
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=8, stride=4)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
-        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
-
-        conv_output_size = self._get_conv_output_size()
+        
+        self.depth_fc1 = nn.Linear(8, 64)
 
         # network branch for goal info
         self.goal_fc = nn.Linear(2, 32)
 
-        self.combined_fc = nn.Linear(conv_output_size + 32, 256)
-        self.head = nn.Linear(256, outputs)
-
-    def _get_conv_output_size(self):
-        x = torch.zeros(1, 1, self.image_height, self.image_width)
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = F.relu(self.conv3(x))
-        return int(numpy.prod(x.size()))
+        self.combined_fc1 = nn.Linear(64 + 32, 128)
+        self.combined_fc2 = nn.Linear(128, 64)
+        self.head = nn.Linear(64, outputs)
 
     # Called with either one element to determine next action, or a batch
     # during optimization. Returns tensor([[left0exp,right0exp]...]).
@@ -123,18 +110,16 @@ class DQN(nn.Module):
             x = x.unsqueeze(0)
 
         # split input into depth image and goal info
-        depth_img = x[:, :-2].view(-1, 1, self.image_height, self.image_width)
-        goal_info = x[:, -2:]
+        depth_img = x[:, :8]
+        goal_info = x[:, 8:]
 
-        depth_features = F.relu(self.conv1(depth_img)) # maybe try SiLU insted of ReLU
-        depth_features = F.relu(self.conv2(depth_features))
-        depth_features = F.relu(self.conv3(depth_features))
-        depth_features = depth_features.view(depth_features.size(0), -1)
+        depth_features = F.silu(self.depth_fc1(depth_img))
 
-        goal_features = F.relu(self.goal_fc(goal_info))
+        goal_features = F.silu(self.goal_fc(goal_info))
 
         combined_features = torch.cat((depth_features, goal_features), dim=1)
-        combined_features = F.relu(self.combined_fc(combined_features))
+        combined_features = F.silu(self.combined_fc1(combined_features))
+        combined_features = F.silu(self.combined_fc2(combined_features))
 
         output = self.head(combined_features)
 
@@ -150,7 +135,7 @@ def select_action(state, eps_start, eps_end, eps_decay):
     sample = random.random()
     
     eps_threshold = eps_end + (eps_start - eps_end) * \
-        math.exp(-1. * (steps_done/8) / eps_decay)  # steps / 8, to make it easier to control the decay
+        math.exp(-1. * (steps_done/4) / eps_decay)  # steps / int, to make it easier to control the decay
     
     steps_done += 1
     if sample > eps_threshold:
@@ -212,6 +197,19 @@ def optimize_model(batch_size, gamma):
     for param in policy_net.parameters():
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
+
+def soft_update(target, source, tau=0.001):
+    """
+    Try a soft update of the target network parameters
+    θ_target = τ * θ_source + (1 - τ) * θ_target
+    
+    Args:
+        target (nn.Module): Target network to update
+        source (nn.Module): Source network to copy from
+        tau (float): Interpolation parameter - typically a small value like 0.001
+    """
+    for target_param, source_param in zip(target.parameters(), source.parameters()):
+        target_param.data.copy_(tau * source_param.data + (1.0 - tau) * target_param.data)
 
 # logic to plot the rewards
 def plot_rewards(episode_rewards, episode_n, window_size=100):
@@ -354,6 +352,9 @@ if __name__ == '__main__':
     beta_start = rospy.get_param("/turtlebot3/beta_start", 0.4)
     beta_frames = rospy.get_param("/turtlebot3/beta_frames", 100000)
 
+    tau = rospy.get_param("/turtlebot3/tau", 0.001)
+    use_soft_update = rospy.get_param("/turtlebot3/use_soft_update", True)
+
     # Initialises the algorithm that we are going to use for learning
     # if gpu is to be used
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -363,7 +364,7 @@ if __name__ == '__main__':
 
     # Get number of actions from gym action space
     n_actions = env.action_space.n
-    n_observations = 4802
+    n_observations = 10
 
     # initialize networks with input and output sizes
     policy_net = DQN(n_observations, n_actions).to(device)
@@ -441,6 +442,11 @@ if __name__ == '__main__':
             rospy.logdebug("# episode cumulated_reward=>" + str(cumulated_reward))
             rospy.logdebug("# State in which we will start next step=>" + str(next_state))
             optimize_model(batch_size, gamma)
+            if use_soft_update:
+                soft_update(target_net, policy_net, tau)
+            else:
+                if i_episode % target_update == 0:
+                    target_net.load_state_dict(policy_net.state_dict())
             if done:
                 episode_durations.append(t + 1)
                 episode_rewards.append(cumulated_reward)
@@ -450,11 +456,6 @@ if __name__ == '__main__':
             else:
                 rospy.logdebug("NOT DONE")
                 state = next_state
-
-            #rospy.logwarn("############### END Step=>" + str(t))
-            # Update the target network, copying all weights and biases in DQN
-        if i_episode % target_update == 0:
-            target_net.load_state_dict(policy_net.state_dict())
 
         if i_episode % 100 == 0:
             plot_rewards(episode_rewards, i_episode)
