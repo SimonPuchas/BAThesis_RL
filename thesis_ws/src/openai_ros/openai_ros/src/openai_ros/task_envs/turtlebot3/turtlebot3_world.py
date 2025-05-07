@@ -383,8 +383,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
 
         if not done:
 
-            # maybe add small penalty per step, to encourage faster learning
-            step_penalty = -0.01 # maybe reduce this again
+            step_penalty = -0.05
 
             # Calculate normalized distance for reward scaling
             normalized_distance = min(1.0, distance_to_goal / 10.0)

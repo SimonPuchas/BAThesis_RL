@@ -435,7 +435,7 @@ if __name__ == '__main__':
 
             # Store the transition in memory
             if reward.item() > 150:
-                success_priority_bonus = 10.0
+                success_priority_bonus = 50.0
                 memory.push(state, action, next_state, reward, priority = success_priority_bonus)
                 rospy.loginfo(f"High reward episode. Storing transition with higher priority: {success_priority_bonus}")
             else:
