@@ -161,9 +161,11 @@ class PriorityReplayMemory(object):
         # Normalize all weights together
         weights = np.array(weights, dtype=np.float32)
         if len(weights) > 0:
+            weights = np.array(weights, dtype=np.float32)
             weights = weights / np.max(weights)
-        
-        return samples, indices, torch.FloatTensor(weights)
+            return samples, indices, torch.FloatTensor(weights).to(device)
+        else:
+            return samples, indices, torch.ones(len(samples), device=device)
     
     def update_priorities(self, indices, priorities):
         for (buffer_id, idx), priority in zip(indices, priorities):
@@ -242,6 +244,10 @@ def optimize_model(batch_size, gamma):
     if len(memory) < batch_size:
         return
     samples, indices, weights = memory.sample(batch_size)
+
+    if len(samples) == 0:
+        return
+    
     # Transpose the batch (see https://stackoverflow.com/a/19343/3343043 for
     # detailed explanation). This converts batch-array of Transitions
     # to Transition of batch-arrays.
@@ -276,6 +282,9 @@ def optimize_model(batch_size, gamma):
     td_errors_scalar = [float(err[0]) for err in td_errors]
 
     memory.update_priorities(indices, [err + 1e-5 for err in td_errors_scalar])
+
+    if weights.shape[0] != len(samples):
+        weights = torch.ones(len(samples), device=device)
 
     # Compute Huber loss
     criterion = nn.SmoothL1Loss()
