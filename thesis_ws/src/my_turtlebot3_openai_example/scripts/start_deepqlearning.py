@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from collections import namedtuple, deque
 from itertools import count
 from functools import reduce
+import numpy as np
 
 import time
 from gym import wrappers
@@ -43,46 +44,136 @@ class ReplayMemory(object):
 '''
 
 class PriorityReplayMemory(object):
-    def __init__(self, capacity, alpha=0.6, beta_start=0.4, beta_frames=100000):
-        self.alpha = alpha  # how much prioritization is used (1.0 is full, 0.0 is none)
-        self.beta_start = beta_start    # initial beta for importance sampling (bias correction)
-        self.beta_frames = beta_frames  # frames over which beta is annealed to 1.0
-        self.capacity = capacity
-        self.memory = deque([], maxlen=capacity)
-        self.priorities = deque([], maxlen=capacity)
-        self.frame = 0
-
+    def __init__(self, capacity, alpha=0.6, beta_start=0.4, beta_frames=100000, 
+                 elite_ratio=0.2, reward_threshold=100):
+        """
+        Dual buffer prioritized experience replay memory.
+        With this dual buffer, we can keep some good experiences in a seperate buffer,
+        instead of overwriting them with bad experiences.
+        
+        Args:
+            capacity: Total capacity of both buffers combined
+            alpha: Priority exponent (how much to prioritize based on TD error)
+            beta_start: Initial importance sampling weight
+            beta_frames: Number of frames over which to anneal beta to 1.0
+            elite_ratio: Fraction of capacity reserved for elite experiences
+            reward_threshold: Minimum reward for a transition to be considered elite
+        """
+        # Split capacity between regular and elite buffers
+        self.regular_capacity = int(capacity * (1 - elite_ratio))
+        self.elite_capacity = int(capacity * elite_ratio)
+        
+        # Regular buffer for most experiences
+        self.regular_memory = []
+        self.regular_priorities = []
+        
+        # Elite buffer for high-reward experiences
+        self.elite_memory = []
+        self.elite_priorities = []
+        
+        # Hyperparameters
+        self.alpha = alpha
+        self.beta = beta_start
+        self.beta_start = beta_start
+        self.beta_frames = beta_frames
+        self.frame = 1
+        self.reward_threshold = reward_threshold
+        
     def push(self, *args, priority=None):
+        transition = Transition(*args)
+        reward = args[3].item() if isinstance(args[3], torch.Tensor) else args[3]
+        
         if priority is None:
-            priority = max(self.priorities) if self.priorities else 1.0
-        self.memory.append(Transition(*args))
-        self.priorities.append(priority)
+            priority = 1.0
+            
+        # Determine which buffer to use based on reward
+        if reward > self.reward_threshold:
+            # Add to elite buffer
+            if len(self.elite_memory) >= self.elite_capacity:
+                min_idx = np.argmin(self.elite_priorities)
+                min_priority = self.elite_priorities[min_idx]
+                
+                # Only replace if new transition has higher priority
+                if priority > min_priority:
+                    self.elite_memory[min_idx] = transition
+                    self.elite_priorities[min_idx] = priority
+                    rospy.logdebug(f"Replaced elite transition with priority {min_priority} with new one of priority {priority}")
+            else:
+                # Elite buffer not full yet, just append
+                self.elite_memory.append(transition)
+                self.elite_priorities.append(priority)
+        else:
+            # Add to regular buffer
+            if len(self.regular_memory) >= self.regular_capacity:
+                self.regular_memory.pop(0)
+                self.regular_priorities.pop(0)
+            self.regular_memory.append(transition)
+            self.regular_priorities.append(priority)
 
     def sample(self, batch_size):
+        # Update beta parameter for importance sampling
         self.frame += 1
-        beta = min(1.0, self.beta_start + self.frame * (1.0 - self.beta_start) / self.beta_frames)
-
-        priorities = numpy.array(self.priorities)
-        probabilities = priorities ** self.alpha
-        probabilities /= probabilities.sum()
-
-        indices = numpy.random.choice(len(self.memory), batch_size, p=probabilities)
-        samples = [self.memory[idx] for idx in indices]
-
-        weights = (len(self.memory) * probabilities[indices]) ** (-beta)
-        weights /= weights.max()
-
-        return samples, indices, torch.FloatTensor(weights).to(device)
+        self.beta = min(1.0, self.beta_start + (1.0 - self.beta_start) * 
+                        (self.frame / self.beta_frames))
+        
+        # Determine how many samples to take from each buffer
+        elite_samples = min(batch_size // 4, len(self.elite_memory))  # 25% from elite buffer
+        regular_samples = min(batch_size - elite_samples, len(self.regular_memory))
+        
+        samples = []
+        indices = []
+        weights = []
+        
+        # Sample from regular buffer
+        if regular_samples > 0:
+            regular_probs = np.array(self.regular_priorities, dtype=np.float64) ** self.alpha
+            regular_probs = regular_probs / np.sum(regular_probs)
+            
+            regular_indices = np.random.choice(len(self.regular_memory), regular_samples, 
+                                             replace=False, p=regular_probs)
+            
+            # Calculate importance sampling weights
+            importance_weights = (len(self.regular_memory) * regular_probs[regular_indices]) ** (-self.beta)
+            regular_weights = importance_weights / np.max(importance_weights) if len(importance_weights) > 0 else []
+            
+            for i, idx in enumerate(regular_indices):
+                samples.append(self.regular_memory[idx])
+                indices.append((0, idx))  # 0 indicates regular buffer
+                weights.append(regular_weights[i])
+        
+        # Sample from elite buffer
+        if elite_samples > 0:
+            elite_probs = np.array(self.elite_priorities, dtype=np.float64) ** self.alpha
+            elite_probs = elite_probs / np.sum(elite_probs)
+            
+            elite_indices = np.random.choice(len(self.elite_memory), elite_samples, 
+                                           replace=False, p=elite_probs)
+            
+            # Calculate importance sampling weights
+            importance_weights = (len(self.elite_memory) * elite_probs[elite_indices]) ** (-self.beta)
+            elite_weights = importance_weights / np.max(importance_weights) if len(importance_weights) > 0 else []
+            
+            for i, idx in enumerate(elite_indices):
+                samples.append(self.elite_memory[idx])
+                indices.append((1, idx))  # 1 indicates elite buffer
+                weights.append(elite_weights[i])
+        
+        # Normalize all weights together
+        weights = np.array(weights, dtype=np.float32)
+        if len(weights) > 0:
+            weights = weights / np.max(weights)
+        
+        return samples, indices, torch.FloatTensor(weights)
     
     def update_priorities(self, indices, priorities):
-        for idx, priority in zip(indices, priorities):
-            if isinstance(priority, numpy.ndarray):
-                self.priorities[idx] = float(priority.flatten()[0])
-            else:
-                self.priorities[idx] = float(priority)
+        for (buffer_id, idx), priority in zip(indices, priorities):
+            if buffer_id == 0:  # Regular buffer
+                self.regular_priorities[idx] = priority
+            else:  # Elite buffer
+                self.elite_priorities[idx] = priority
 
     def __len__(self):
-        return len(self.memory)
+        return len(self.regular_memory) + len(self.elite_memory)
 
 class DQN(nn.Module):
 
@@ -356,6 +447,9 @@ if __name__ == '__main__':
     tau = rospy.get_param("/turtlebot3/tau", 0.001)
     use_soft_update = rospy.get_param("/turtlebot3/use_soft_update", True)
 
+    elite_ratio = rospy.get_param("/turtlebot3/elite_ratio", 0.2)
+    reward_threshold = rospy.get_param("/turtlebot3/reward_threshold", 100)
+
     # Initialises the algorithm that we are going to use for learning
     # if gpu is to be used
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -377,7 +471,7 @@ if __name__ == '__main__':
     lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=500, gamma=0.5)
 
     #memory = ReplayMemory(100000)
-    memory = PriorityReplayMemory(100000, alpha, beta_start, beta_frames)
+    memory = PriorityReplayMemory(50000, alpha, beta_start, beta_frames, elite_ratio, reward_threshold)
     episode_durations = []
     steps_done = 0
 
@@ -434,7 +528,7 @@ if __name__ == '__main__':
             next_state = torch.tensor(observation, device=device, dtype=torch.float)
 
             # Store the transition in memory
-            if reward.item() > 150:
+            if reward.item() > reward_threshold:
                 success_priority_bonus = 50.0
                 memory.push(state, action, next_state, reward, priority = success_priority_bonus)
                 rospy.loginfo(f"High reward episode. Storing transition with higher priority: {success_priority_bonus}")

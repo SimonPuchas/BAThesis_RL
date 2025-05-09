@@ -25,3 +25,6 @@ turtlebot3: #namespace
 
     tau: 0.001
     use_soft_update: true
+
+    elite_ratio: 0.2
+    reward_threshold: 100
