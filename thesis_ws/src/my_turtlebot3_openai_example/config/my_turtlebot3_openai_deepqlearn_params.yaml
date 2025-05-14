@@ -6,7 +6,7 @@ turtlebot3: #namespace
     pos_step: 0.016     # increment in position for each command
     
     #dqn parameters
-    gamma: 0.97
+    gamma: 0.99
     epsilon_start: 0.95
     epsilon_end: 0.05
     epsilon_decay: 20000

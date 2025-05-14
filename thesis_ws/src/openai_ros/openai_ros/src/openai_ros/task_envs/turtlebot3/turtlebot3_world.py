@@ -10,6 +10,8 @@ import os
 import cv2
 from cv_bridge import CvBridge
 
+import matplotlib.pyplot as plt
+
 
 class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
     def __init__(self):
@@ -236,9 +238,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         """
         self._episode_done = False
         
-        # Default features if image is not available
-        # [front_min, front_left_min, left_min, back_left_min, back_min, back_right_min, right_min, front_right_min]
-        num_sectors = 8
+        num_sectors = 5
         default_features = numpy.full(num_sectors, 10.0)
         
         if depth_image_raw is None:
@@ -260,43 +260,31 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
             
             # Create sector masks - these divide the image into angular segments
             sector_features = []
-            
-            # Front sector (central portion of image)
-            front_sector = resized_depth[5:25, 15:25] 
-            front_min = numpy.min(front_sector)
-            sector_features.append(front_min)
-            
-            # Front-left sector
-            front_left_sector = resized_depth[5:25, 5:15]
-            front_left_min = numpy.min(front_left_sector)
-            sector_features.append(front_left_min)
-            
-            # Left sector
-            left_sector = resized_depth[5:25, 0:5]
+
+            # far-left sector
+            far_left_sector = resized_depth[5:25, 0:5]
+            far_left_min = numpy.min(far_left_sector)
+            sector_features.append(far_left_min)
+
+            # left sector
+            left_sector = resized_depth[5:25, 5:15]
             left_min = numpy.min(left_sector)
             sector_features.append(left_min)
+
+            # center
+            center_sector = resized_depth[5:25, 15:25] 
+            center_min = numpy.min(center_sector)
+            sector_features.append(center_min)
             
-            # Back-left sector (would need depth cameras covering this area)
-            back_left_min = 10.0  # Default maximum range as this is likely not visible
-            sector_features.append(back_left_min)
-            
-            # Back sector (would need depth cameras covering this area)
-            back_min = 10.0  # Default maximum range as this is likely not visible
-            sector_features.append(back_min)
-            
-            # Back-right sector (would need depth cameras covering this area)
-            back_right_min = 10.0  # Default maximum range as this is likely not visible
-            sector_features.append(back_right_min)
-            
-            # Right sector
-            right_sector = resized_depth[5:25, 35:40]
+            # right sector
+            right_sector = resized_depth[5:25, 25:35]
             right_min = numpy.min(right_sector)
             sector_features.append(right_min)
             
-            # Front-right sector
-            front_right_sector = resized_depth[5:25, 25:35]
-            front_right_min = numpy.min(front_right_sector)
-            sector_features.append(front_right_min)
+            # far-right sector
+            far_right_sector = resized_depth[5:25, 35:40]
+            far_right_min = numpy.min(far_right_sector)
+            sector_features.append(far_right_min)
             
             # Check if robot is too close to an obstacle
             min_distance = numpy.min(sector_features)
@@ -374,26 +362,25 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         distance_difference = self.previous_distance_to_goal - distance_to_goal
         self.previous_distance_to_goal = distance_to_goal
 
-        orientation = odometry.pose.pose.orientation
-        orientation_list = [orientation.x, orientation.y, orientation.z, orientation.w]
-        _, _, yaw = self.euler_from_quaternion(orientation_list)
-        angle_to_goal = numpy.arctan2(self.goal_position.y - current_position.y,
-                                       self.goal_position.x - current_position.x)
-        angle_difference = abs(angle_to_goal - yaw)
-
         if not done:
 
-            step_penalty = -0.05
+            step_penalty = -0.03
 
-            # Calculate normalized distance for reward scaling
+            '''
+            If the robot is e.g. 5 meters away then normalized_distance = 0.5
+            So goal_reward is then: 40.0 * (distance_difference * 1.5)
+            distance_difference is max 0.1m per step but mostly less
+            goal_reward is in a range of about [-0.5, -5] for getting further and [0.5, 5] when getting closer
+            Therefore, the goal_reward will always be larger then the step_penalty when getting closer
+            '''
+            #Calculate normalized distance for reward scaling
             normalized_distance = min(1.0, distance_to_goal / 10.0)
 
             # Dynamic rewards for getting closer or further
             goal_reward = self.closer_to_goal_reward * (distance_difference *(1 + (1 - normalized_distance)))
+            #rospy.logwarn("Goal reward: " + str(goal_reward))
 
-            angle_penalty = -0.3 * angle_difference
-
-            reward = goal_reward + step_penalty + angle_penalty
+            reward = goal_reward + step_penalty
         else:
             # Reward for reaching goal
             if distance_to_goal <= self.goal_distance_threshold:

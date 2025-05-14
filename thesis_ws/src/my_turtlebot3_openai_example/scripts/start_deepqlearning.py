@@ -182,7 +182,7 @@ class DQN(nn.Module):
     def __init__(self, inputs, outputs):
         super(DQN, self).__init__()
         
-        self.depth_fc1 = nn.Linear(8, 64)
+        self.depth_fc1 = nn.Linear(5, 64)
 
         # network branch for goal info
         self.goal_fc = nn.Linear(2, 32)
@@ -203,8 +203,8 @@ class DQN(nn.Module):
             x = x.unsqueeze(0)
 
         # split input into depth image and goal info
-        depth_img = x[:, :8]
-        goal_info = x[:, 8:]
+        depth_img = x[:, :5]
+        goal_info = x[:, 5:]
 
         depth_features = F.silu(self.depth_fc1(depth_img))
 
@@ -297,7 +297,6 @@ def optimize_model(batch_size, gamma):
     for param in policy_net.parameters():
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
-    lr_scheduler.step()
 
 def soft_update(target, source, tau=0.001):
     """
@@ -468,7 +467,7 @@ if __name__ == '__main__':
 
     # Get number of actions from gym action space
     n_actions = env.action_space.n
-    n_observations = 10
+    n_observations = 7
 
     # initialize networks with input and output sizes
     policy_net = DQN(n_observations, n_actions).to(device)
@@ -477,10 +476,9 @@ if __name__ == '__main__':
     target_net.eval()
 
     optimizer = optim.Adam(policy_net.parameters(), lr=1e-4)
-    lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=500, gamma=0.5)
 
     #memory = ReplayMemory(100000)
-    memory = PriorityReplayMemory(50000, alpha, beta_start, beta_frames, elite_ratio, reward_threshold)
+    memory = PriorityReplayMemory(100000, alpha, beta_start, beta_frames, elite_ratio, reward_threshold)
     episode_durations = []
     steps_done = 0
 
