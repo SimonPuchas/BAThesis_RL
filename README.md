@@ -9,9 +9,3 @@ I use the OpenAI gym with multiple modifications to train an RL agent to navigat
 - Goal point navigation instead of simply trying to survive as long as possible
 - new custom maze world
 - general modifications to the NN architecture, reward structure, etc.
-
-
-## Security Disclaimer
-
-Be careful when using torch.load() with weights_only=True to load .pt files, as there was a security breach detected with it.
-More details can be found here https://github.com/advisories/GHSA-53q9-r3pm-6pq6
