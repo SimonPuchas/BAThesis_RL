@@ -28,11 +28,11 @@ turtlebot3: #namespace
     goal_position_x: -0.5
     goal_position_y: 3.0
     goal_distance_threshold: 0.15
-    goal_reached_reward: 150.0
+    goal_reached_reward: 100.0
     closer_to_goal_reward: 40.0
 
     timeout: 60.0 # Timeout in seconds
     
-    stuck_threshold: 30 # How many steps we wait to determine we are stuck
+    stuck_threshold: 35 # How many steps we wait to determine we are stuck
     position_tolerance: 0.01 # Tolerance in meters to consider we are in the same position
 

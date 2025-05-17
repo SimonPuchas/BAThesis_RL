@@ -535,12 +535,7 @@ if __name__ == '__main__':
             next_state = torch.tensor(observation, device=device, dtype=torch.float)
 
             # Store the transition in memory
-            if reward.item() > reward_threshold:
-                success_priority_bonus = 50.0
-                memory.push(state, action, next_state, reward, priority = success_priority_bonus)
-                rospy.loginfo(f"High reward episode. Storing transition with higher priority: {success_priority_bonus}")
-            else:
-                memory.push(state, action, next_state, reward)
+            memory.push(state, action, next_state, reward)
 
             # Perform one step of the optimization (on the policy network)
             rospy.logdebug("# state we were=>" + str(state))
