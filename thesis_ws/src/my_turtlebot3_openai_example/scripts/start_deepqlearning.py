@@ -183,6 +183,7 @@ class DQN(nn.Module):
         super(DQN, self).__init__()
         
         self.depth_fc1 = nn.Linear(5, 64)
+        #self.depth_fc2 = nn.Linear(64, 64)
 
         # network branch for goal info
         self.goal_fc = nn.Linear(2, 32)
@@ -207,6 +208,7 @@ class DQN(nn.Module):
         goal_info = x[:, 5:]
 
         depth_features = F.silu(self.depth_fc1(depth_img))
+        #depth_features = F.silu(self.depth_fc2(depth_features))
 
         goal_features = F.silu(self.goal_fc(goal_info))
 
