@@ -11,6 +11,7 @@ import cv2
 from cv_bridge import CvBridge
 
 import matplotlib.pyplot as plt
+import random
 
 
 class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
@@ -76,11 +77,6 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.min_laser_value = rospy.get_param('/turtlebot3/min_laser_value')
         self.max_linear_aceleration = rospy.get_param('/turtlebot3/max_linear_aceleration')
 
-        # Parameters for the goal point
-        self.goal_position = Point()
-        self.goal_position.x = rospy.get_param('/turtlebot3/goal_position_x', 5.0)
-        self.goal_position.y = rospy.get_param('/turtlebot3/goal_position_y', 5.0)
-        self.goal_position.z = 0.0
         self.goal_distance_threshold = rospy.get_param('/turtlebot3/goal_distance_threshold', 0.2)
 
         self.timeout = rospy.get_param('/turtlebot3/timeout', 120.0)
@@ -148,6 +144,21 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self.cumulated_reward = 0.0
         # Set to false Done, because its calculated asyncronously
         self._episode_done = False
+
+        # Dynamic goal position, changing every epsiode
+        goal_points = [(-0.5, 3.0), 
+                       (2.5, -1.0),
+                       (-2.5, 2.0),
+                       (-2.5, -2.0)]
+        
+        x, y = random.choice(goal_points)
+
+        self.goal_position = Point()
+        self.goal_position.x = x
+        self.goal_position.y = y
+        self.goal_position.z = 0.0
+
+        rospy.logwarn("Next Goal Position==>"+str(self.goal_position))
 
         # Initialize previous distance to the goal
         odometry = self.get_odom()

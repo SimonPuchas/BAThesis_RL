@@ -449,6 +449,7 @@ if __name__ == '__main__':
 
     load_model = rospy.get_param("/turtlebot3/load_model", False)
     reset_epsilon = rospy.get_param("/turtlebot3/reset_epsilon", False)
+    reset_memory = rospy.get_param("/turtlebot3/reset_memory", False)
 
     alpha = rospy.get_param("/turtlebot3/alpha", 0.6)
     beta_start = rospy.get_param("/turtlebot3/beta_start", 0.4)
@@ -498,13 +499,17 @@ if __name__ == '__main__':
                     policy_net.load_state_dict(checkpoint['policy_net_state_dict'])
                     target_net.load_state_dict(checkpoint['target_net_state_dict'])
                     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-                    memory = checkpoint['memory']
                     episode_rewards = checkpoint['episode_rewards']
                     steps_done = checkpoint['steps_done']
                     highest_reward = checkpoint['highest_reward']
                     if reset_epsilon:
-                        epsilon = 0.3
+                        epsilon = 0.4
                         rospy.loginfo("Resetting epsilon to {epsilon}")
+                    if reset_memory:
+                        memory = PriorityReplayMemory(100000, alpha, beta_start, beta_frames, elite_ratio, reward_threshold)
+                        rospy.loginfo("Resetting memory")
+                    else:
+                        memory = checkpoint['memory']
                     rospy.loginfo(f"Resuming training from episode {start_episode}")
 
     # Starts the main training loop: the one about the episodes to do

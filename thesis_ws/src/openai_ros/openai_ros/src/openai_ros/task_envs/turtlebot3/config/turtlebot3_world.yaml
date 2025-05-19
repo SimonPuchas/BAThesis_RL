@@ -25,8 +25,8 @@ turtlebot3: #namespace
     depth_image_size: [30, 40]  # [height, width]
     depth_threshold: 0.15
     
-    goal_position_x: -0.5
-    goal_position_y: 3.0
+    #goal_position_x: -0.5
+    #goal_position_y: 3.0
     goal_distance_threshold: 0.15
     goal_reached_reward: 100.0
     closer_to_goal_reward: 40.0
