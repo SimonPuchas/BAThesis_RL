@@ -146,7 +146,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         self._episode_done = False
 
         # Dynamic goal position, changing every epsiode
-        goal_points = [(-0.5, 3.0), 
+        goal_points = [(-0.5, 2.5), 
                        (2.5, -1.0),
                        (-2.5, 2.0),
                        (-2.5, -2.0)]

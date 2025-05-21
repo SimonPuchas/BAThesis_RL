@@ -1022,45 +1022,6 @@
       </link>
       <pose>-1.37708 2.44036 0 0 -0 1.57</pose>
     </model>
-    <model name='nist_maze_wall_120_10_clone_2_clone_9'>
-      <static>1</static>
-      <link name='nist_maze_wall_120_link'>
-        <pose>0 0 0 0 -0 0</pose>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://nist_maze_wall_120/meshes/nist_maze_wall_120.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://nist_maze_wall_120/meshes/nist_maze_wall_120.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-1.37687 0.387379 0 0 -0 1.57</pose>
-    </model>
     <model name='nist_maze_wall_120_10_clone_2_clone_10'>
       <static>1</static>
       <link name='nist_maze_wall_120_link'>
@@ -1413,10 +1374,10 @@
       <pose>1.60908 -2.36608 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>1033 472000000</sim_time>
-      <real_time>168 280534095</real_time>
-      <wall_time>1746375959 60437035</wall_time>
-      <iterations>167830</iterations>
+      <sim_time>963 851000000</sim_time>
+      <real_time>98 488105778</real_time>
+      <wall_time>1747731027 271832595</wall_time>
+      <iterations>98209</iterations>
       <model name='ground_plane'>
         <pose>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -1617,16 +1578,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='nist_maze_wall_120_10_clone_2_clone_9'>
-        <pose>-1.37687 0.387379 0 0 -0 1.57</pose>
-        <scale>1 1 1</scale>
-        <link name='nist_maze_wall_120_link'>
-          <pose>-1.37687 0.387379 0 0 -0 1.57</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='nist_maze_wall_120_11'>
         <pose>-0.421563 1.394 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -1768,20 +1719,20 @@
         </link>
       </model>
       <model name='nist_maze_wall_120_clone'>
-        <pose>-0.535345 2.42607 0 0 -0 0</pose>
+        <pose>-0.51767 2.416 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='nist_maze_wall_120_link'>
-          <pose>-0.535345 2.42607 0 0 -0 0</pose>
+          <pose>-0.51767 2.416 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='nist_maze_wall_120_clone_0'>
-        <pose>2.39455 2.4407 0 0 -0 0</pose>
+        <pose>2.41226 2.44355 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='nist_maze_wall_120_link'>
-          <pose>2.39455 2.4407 0 0 -0 0</pose>
+          <pose>2.41226 2.44355 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -1793,7 +1744,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-0.713003 -5.90609 12.9222 -0 1.1538 1.43219</pose>
+        <pose>-5.22376 -7.31196 18.3928 0 1.1098 0.95221</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -1835,7 +1786,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose>-0.535345 2.42607 0 0 -0 0</pose>
+      <pose>-0.51767 2.416 0 0 -0 0</pose>
     </model>
     <model name='nist_maze_wall_120_clone_0'>
       <static>1</static>
@@ -1874,7 +1825,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose>2.39455 2.4407 0 0 -0 0</pose>
+      <pose>2.41226 2.44355 0 0 -0 0</pose>
     </model>
   </world>
 </sdf>
