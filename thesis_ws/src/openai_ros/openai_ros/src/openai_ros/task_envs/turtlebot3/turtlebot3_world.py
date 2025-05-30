@@ -13,6 +13,9 @@ from cv_bridge import CvBridge
 import matplotlib.pyplot as plt
 import random
 
+from gazebo_msgs.msg import ModelState
+from gazebo_msgs.srv import SetModelState
+
 
 class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
     def __init__(self):
@@ -50,6 +53,9 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         # We set the reward range, which is not compulsory but here we do it.
         self.reward_range = (-numpy.inf, numpy.inf)
 
+        # Service to set model state
+        rospy.wait_for_service('/gazebo/set_model_state')
+        self.set_model_state_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
 
         #number_observations = rospy.get_param('/turtlebot3/n_observations')
         """
@@ -130,7 +136,7 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
                         self.init_linear_turn_speed,
                         epsilon=0.05,
                         update_rate=10)
-
+        
         return True
 
 
@@ -145,11 +151,28 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         # Set to false Done, because its calculated asyncronously
         self._episode_done = False
 
+        spawn_points = [(0.0, 0.0),
+                        (2.0, 1.0),
+                        (-1.0, 1.0),
+                        (-2.0, -1.0),
+                        (0.5, -2.0)]
+        
+        spawn_x, spawn_y = random.choice(spawn_points)
+        spawn_yaw = random.uniform(-numpy.pi, numpy.pi)
+
+        self.set_robot_spawn_position(spawn_x, spawn_y, 0.0, spawn_yaw)
+
+        rospy.logwarn("TurtleBot3 Spawned at==>"+str(spawn_x)+","+str(spawn_y)+","+str(spawn_yaw))
+
         # Dynamic goal position, changing every epsiode
         goal_points = [(-0.5, 2.5), 
                        (2.5, -1.0),
                        (-2.5, 2.0),
-                       (-2.5, -2.0)]
+                       (-2.5, -2.0),
+                       (1.5, 1.5),
+                       (0.5, -2.0),
+                       (-2.5, 0.0),
+                       (0.5, 2.0)]
         
         x, y = random.choice(goal_points)
 
@@ -413,7 +436,37 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         rospy.logdebug("Cumulated_steps=" + str(self.cumulated_steps))
 
         return reward
+    
+    def set_robot_spawn_position(self, x, y, z, yaw):
+        """
+        Set the robot's spawn position in the Gazebo serivce
+        """
+        model_state = ModelState()
+        model_state.model_name = 'turtlebot3_burger'
+        
+        model_state.pose.position.x = x
+        model_state.pose.position.y = y
+        model_state.pose.position.z = z
 
+        quaternion = self.euler_to_quaternion(0, 0, yaw)
+        model_state.pose.orientation.x = quaternion[0]
+        model_state.pose.orientation.y = quaternion[1]
+        model_state.pose.orientation.z = quaternion[2]
+        model_state.pose.orientation.w = quaternion[3]
+
+        model_state.twist.linear.x = 0.0
+        model_state.twist.linear.y = 0.0
+        model_state.twist.linear.z = 0.0
+        model_state.twist.angular.x = 0.0
+        model_state.twist.angular.y = 0.0
+        model_state.twist.angular.z = 0.0
+
+        model_state.reference_frame = 'world'
+
+        try:
+            self.set_model_state_service(model_state)
+        except rospy.ServiceException as e:
+            rospy.logerr("Service call failed: " + str(e))
 
     # Internal TaskEnv Methods
 
@@ -491,4 +544,22 @@ class TurtleBot3WorldEnv(turtlebot3_env.TurtleBot3Env):
         yaw = numpy.arctan2(siny_cosp, cosy_cosp)
         
         return roll, pitch, yaw
+    
+    def euler_to_quaternion(self, roll, pitch, yaw):
+        """
+        Convert euler angles to quaternion
+        """
+        cy = numpy.cos(yaw * 0.5)
+        sy = numpy.sin(yaw * 0.5)
+        cr = numpy.cos(roll * 0.5)
+        sr = numpy.sin(roll * 0.5)
+        cp = numpy.cos(pitch * 0.5)
+        sp = numpy.sin(pitch * 0.5)
 
+        q = [0] * 4
+        q[0] = sr * cp * cy - cr * sp * sy  # x
+        q[1] = cr * sp * cy + sr * cp * sy  # y  
+        q[2] = cr * cp * sy - sr * sp * cy  # z
+        q[3] = cr * cp * cy + sr * sp * sy  # w
+
+        return q

@@ -6,7 +6,7 @@
     <arg name="z" default="0.0" />
     <arg name="roll" default="0.0"/>
     <arg name="pitch" default="0.0"/>
-    <arg name="yaw" default="1.57"/>
+    <arg name="yaw" default="0.0"/>
 
     <!--There is no xacro.py file, changed it to use inorder-->
     <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro"/>

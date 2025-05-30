@@ -186,7 +186,8 @@ class DQN(nn.Module):
         self.depth_fc2 = nn.Linear(64, 64)
 
         # network branch for goal info
-        self.goal_fc = nn.Linear(2, 32)
+        self.goal_fc1 = nn.Linear(2, 32)
+        self.goal_fc2 = nn.Linear(32, 32)
 
         self.combined_fc1 = nn.Linear(64 + 32, 128)
         self.combined_fc2 = nn.Linear(128, 64)
@@ -210,7 +211,8 @@ class DQN(nn.Module):
         depth_features = F.silu(self.depth_fc1(depth_img))
         depth_features = F.silu(self.depth_fc2(depth_features))
 
-        goal_features = F.silu(self.goal_fc(goal_info))
+        goal_features = F.silu(self.goal_fc1(goal_info))
+        goal_features = F.silu(self.goal_fc2(goal_features))
 
         combined_features = torch.cat((depth_features, goal_features), dim=1)
         combined_features = F.silu(self.combined_fc1(combined_features))
@@ -259,11 +261,11 @@ def optimize_model(batch_size, gamma):
     # (a final state would've been the one after which simulation ended)
     non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
                                           batch.next_state)), device=device, dtype=torch.bool)
-    non_final_next_states = torch.stack([s for s in batch.next_state
+    non_final_next_states = torch.stack([s.to(device) for s in batch.next_state
                                                 if s is not None])
-    state_batch = torch.stack(batch.state)
-    action_batch = torch.cat(batch.action)
-    reward_batch = torch.cat(batch.reward)
+    state_batch = torch.stack([s.to(device) for s in batch.state])
+    action_batch = torch.cat([a.to(device) for a in batch.action])
+    reward_batch = torch.cat([r.to(device) for r in batch.reward])
 
     # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
     # columns of actions taken. These are the actions which would've been taken
@@ -323,7 +325,7 @@ def plot_rewards(episode_rewards, episode_n, window_size=100):
         for i in range(len(episode_rewards) - window_size + 1):
             window_avg = numpy.mean(episode_rewards[i:i+window_size])
             moving_avg.append(window_avg)
-        plt.plot(range(window_size-1, len(episode_rewards)), moving_avg, 'b-', 
+        plt.plot(range(window_size-1, len(episode_rewards)), moving_avg, 'r-', 
                 label=f'moving average of last {window_size} episodes')
     
     plt.xlabel('Episode')
